@@ -82,13 +82,17 @@ IG_USER_ID=your_ig_user_id
 IG_ACCESS_TOKEN=your_ig_access_token
 ```
 
-### Step 7: Import the Workflow into n8n
+### Step 7: Import the Workflow
 
-1. Open your n8n instance
-2. Click "Add Workflow" then "Import from File"
-3. Upload `workflows/IG-VIRAL-ENGINE.json`
-4. Configure the Telegram credential with your bot token
-5. Activate the workflow (toggle in top right)
+Choose your platform and import the corresponding workflow file:
+
+| Platform | File | Free Tier |
+|----------|------|-----------|
+| **n8n** (recommended) | `workflows/IG-VIRAL-ENGINE.json` | Unlimited (self-hosted) |
+| **Make.com** | `workflows/IG-VIRAL-ENGINE-MAKE.json` | 1000 ops/month |
+| **Zapier** | `workflows/IG-VIRAL-ENGINE-ZAPIER.json` | 100 tasks/month |
+
+See [Platform Comparison](docs/PLATFORM-COMPARISON.md) for details on each option.
 
 ### Step 8: Set Up a Free AI Provider
 
@@ -198,7 +202,9 @@ ig-viral-engine/
 │   └── MASTER-SYSTEM-PROMPT.md    The AI brain
 │
 ├── workflows/
-│   └── IG-VIRAL-ENGINE.json       n8n workflow (30+ nodes)
+│   ├── IG-VIRAL-ENGINE.json       n8n workflow (35+ nodes)
+│   ├── IG-VIRAL-ENGINE-MAKE.json  Make.com blueprint
+│   └── IG-VIRAL-ENGINE-ZAPIER.json Zapier workflow
 │
 ├── templates/
 │   ├── carousel-templates.html    Carousel HTML templates
@@ -208,7 +214,9 @@ ig-viral-engine/
 └── docs/
     ├── SETUP-GUIDE.md             Complete setup walkthrough
     ├── FREE-TOOLS-REFERENCE.md    Every free tool explained
-    └── CLOUD-DEPLOYMENT.md        Deploy to free cloud platforms
+    ├── FREE-AI-PROVIDERS.md       AI provider setup guide
+    ├── CLOUD-DEPLOYMENT.md        Deploy to free cloud platforms
+    └── PLATFORM-COMPARISON.md     n8n vs Make.com vs Zapier
 ```
 
 ---

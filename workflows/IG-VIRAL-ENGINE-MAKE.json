@@ -1,0 +1,654 @@
+{
+  "name": "IG Viral Engine — Make.com",
+  "flow": [
+    {
+      "id": 1,
+      "module": "gateway:CustomWebhookHook",
+      "version": 1,
+      "parameters": {
+        "hookUrl": "",
+        "hookId": "ig-viral-webhook"
+      },
+      "mapper": {},
+      "metadata": {
+        "designer": {
+          "x": 0,
+          "y": 0
+        },
+        "restore": {},
+        "parameters": [
+          {
+            "name": "hookUrl",
+            "type": "url",
+            "label": "Webhook URL"
+          }
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "module": "tools:TextParser",
+      "version": 1,
+      "parameters": {
+        "pattern": "^(\\/\\w+)(.*)?",
+        "global": false,
+        "singleline": true
+      },
+      "mapper": {
+        "text": "{{1.body.message.text}}",
+        "chatId": "{{1.body.message.chat.id}}",
+        "username": "{{1.body.message.from.username}}",
+        "firstName": "{{1.body.message.from.first_name}}"
+      },
+      "metadata": {
+        "designer": {
+          "x": 300,
+          "y": 0
+        }
+      }
+    },
+    {
+      "id": 3,
+      "module": "tools:Router",
+      "version": 1,
+      "parameters": {},
+      "mapper": {
+        "routes": [
+          {
+            "label": "Start",
+            "conditions": [[{ "a": "{{2.match.1}}", "b": "/start", "o": "equal" }]],
+            "flowId": 4
+          },
+          {
+            "label": "Set Niche",
+            "conditions": [[{ "a": "{{2.match.1}}", "b": "/niche", "o": "equal" }]],
+            "flowId": 5
+          },
+          {
+            "label": "Research",
+            "conditions": [[{ "a": "{{2.match.1}}", "b": "/research", "o": "equal" }]],
+            "flowId": 6
+          },
+          {
+            "label": "Create",
+            "conditions": [[{ "a": "{{2.match.1}}", "b": "/create", "o": "equal" }]],
+            "flowId": 7
+          },
+          {
+            "label": "Post",
+            "conditions": [[{ "a": "{{2.match.1}}", "b": "/post", "o": "equal" }]],
+            "flowId": 8
+          },
+          {
+            "label": "Analytics",
+            "conditions": [[{ "a": "{{2.match.1}}", "b": "/analytics", "o": "equal" }]],
+            "flowId": 9
+          },
+          {
+            "label": "Monetize",
+            "conditions": [[{ "a": "{{2.match.1}}", "b": "/monetize", "o": "equal" }]],
+            "flowId": 10
+          },
+          {
+            "label": "Trends",
+            "conditions": [[{ "a": "{{2.match.1}}", "b": "/trends", "o": "equal" }]],
+            "flowId": 11
+          },
+          {
+            "label": "Competitors",
+            "conditions": [[{ "a": "{{2.match.1}}", "b": "/competitors", "o": "equal" }]],
+            "flowId": 12
+          },
+          {
+            "label": "Hooks",
+            "conditions": [[{ "a": "{{2.match.1}}", "b": "/hooks", "o": "equal" }]],
+            "flowId": 13
+          },
+          {
+            "label": "Hashtags",
+            "conditions": [[{ "a": "{{2.match.1}}", "b": "/hashtags", "o": "equal" }]],
+            "flowId": 14
+          },
+          {
+            "label": "Schedule",
+            "conditions": [[{ "a": "{{2.match.1}}", "b": "/schedule", "o": "equal" }]],
+            "flowId": 15
+          },
+          {
+            "label": "Repurpose",
+            "conditions": [[{ "a": "{{2.match.1}}", "b": "/repurpose", "o": "equal" }]],
+            "flowId": 16
+          },
+          {
+            "label": "Health",
+            "conditions": [[{ "a": "{{2.match.1}}", "b": "/health", "o": "equal" }]],
+            "flowId": 17
+          },
+          {
+            "label": "Status",
+            "conditions": [[{ "a": "{{2.match.1}}", "b": "/status", "o": "equal" }]],
+            "flowId": 18
+          },
+          {
+            "label": "Help",
+            "conditions": [[{ "a": "{{2.match.1}}", "b": "/help", "o": "equal" }]],
+            "flowId": 19
+          },
+          {
+            "label": "Chat (default)",
+            "conditions": [[{ "a": "{{2.match.1}}", "b": "", "o": "notEqual" }]],
+            "flowId": 20
+          }
+        ]
+      },
+      "metadata": {
+        "designer": {
+          "x": 600,
+          "y": 0
+        }
+      }
+    },
+    {
+      "id": 4,
+      "module": "http:ActionSendData",
+      "version": 3,
+      "parameters": {
+        "method": "post",
+        "url": "https://api.telegram.org/bot{{connection.telegramBotToken}}/sendMessage"
+      },
+      "mapper": {
+        "chat_id": "{{2.chatId}}",
+        "text": "Welcome to IG VIRAL ENGINE\n\nThe autonomous Instagram growth system.\n\nCOMMANDS:\n/niche [name] — Set your niche\n/brand — Upload brand\n/research — Deep research\n/create — Generate carousel\n/post — Post to IG\n/analytics — Stats\n/report — Weekly report\n/monetize — Monetization\n/trends — Trend detection\n/competitors — Competitor spy\n/hooks — Hook library\n/hashtags — Hashtag strategy\n/schedule — Posting schedule\n/repurpose — Cross-platform\n/health — Account health\n/status — System status\n/help — Commands\n\nOr just chat. Ask me anything.",
+        "parse_mode": "Markdown"
+      },
+      "metadata": {
+        "designer": {
+          "x": 900,
+          "y": -200
+        }
+      }
+    },
+    {
+      "id": 5,
+      "module": "http:ActionSendData",
+      "version": 3,
+      "parameters": {
+        "method": "post",
+        "url": "https://api.telegram.org/bot{{connection.telegramBotToken}}/sendMessage"
+      },
+      "mapper": {
+        "chat_id": "{{2.chatId}}",
+        "text": "NICHE SET: {{2.match.2}}\n\nStarting deep research across:\n- Instagram competitors\n- Reddit communities\n- Twitter/X trends\n- TikTok viral content\n- Pinterest ideas\n- YouTube content\n- Audience psychology\n- Hook patterns\n- Hashtag strategy\n- Posting times\n- Content pillars\n- Monetization opportunities\n\nThis takes a few minutes. I will message you when complete.",
+        "parse_mode": "Markdown"
+      },
+      "metadata": {
+        "designer": {
+          "x": 900,
+          "y": -100
+        }
+      }
+    },
+    {
+      "id": 6,
+      "module": "http:ActionSendData",
+      "version": 3,
+      "parameters": {
+        "method": "get",
+        "url": "=https://html.duckduckgo.com/html/?q={{encodeURIComponent(2.match.2 + ' instagram viral carousel examples 2024')}}"
+      },
+      "mapper": {},
+      "metadata": {
+        "designer": {
+          "x": 900,
+          "y": 0
+        },
+        "note": "Web search — sends queries to DuckDuckGo for niche research"
+      }
+    },
+    {
+      "id": 7,
+      "module": "openai:CreateChatCompletion",
+      "version": 1,
+      "parameters": {
+        "model": "gpt-4o-mini",
+        "temperature": 0.7,
+        "max_tokens": 4000
+      },
+      "mapper": {
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are VIRAL ENGINE — an autonomous Instagram growth AI. One obsession: GET VIRAL OR DIE TRYING.\n\nYou are a world-class social media strategist, content creator, copywriter, data analyst, and growth hacker.\n\nCAROUSEL CREATION RULES:\n\nSLIDE 1 — THE HOOK:\n- Must stop the scroll immediately\n- Use power words: Secret, Mistake, Truth, Nobody, Wrong, Hidden, Shocking\n- Create CURIOSITY GAP — make them NEED to swipe\n\nSLIDES 2-8 — THE VALUE:\n- Each slide delivers ONE clear point\n- Build tension and anticipation\n- Use data, examples, stories, actionable tips\n\nSLIDE 9 — THE CLIMAX:\n- Biggest insight or key takeaway\n\nSLIDE 10 — THE CTA:\n- Natural, not salesy\n- Options: Save this, Share with someone, Follow for more\n\nEMOTIONAL TRIGGERS:\n- Curiosity, FOMO, Awe, Fear, Aspiration, Controversy\n\nCAPTION STRUCTURE:\n1. Hook line (curiosity-driven)\n2. Story/context (2-3 lines)\n3. Value delivery (3-5 lines)\n4. Engagement driver (1-2 lines)\n5. 20-25 hashtags (5 broad, 10 medium, 5-10 niche)\n\nOUTPUT FORMAT (JSON):\n{\n  \"slides\": [\n    {\"number\": 1, \"type\": \"hook\", \"headline\": \"...\", \"subtext\": \"...\", \"bg_color\": \"#hex\", \"text_color\": \"#hex\"},\n    {\"number\": 2, \"type\": \"content\", \"headline\": \"...\", \"body\": \"...\", \"bg_color\": \"#hex\", \"text_color\": \"#hex\"},\n    ... 7-10 slides\n    {\"number\": 10, \"type\": \"cta\", \"headline\": \"...\", \"body\": \"...\", \"bg_color\": \"#hex\", \"text_color\": \"#hex\"}\n  ],\n  \"caption\": \"Full caption...\",\n  \"hashtags\": [\"tag1\", \"tag2\", ...],\n  \"hook_type\": \"curiosity|stat|question|contrarian|story|fomo\",\n  \"content_pillar\": \"educational|inspirational|entertainment|promotional\",\n  \"best_posting_time\": \"HH:MM\",\n  \"predicted_engagement\": \"viral|strong|average\",\n  \"hook_analysis\": \"Why this hook works\",\n  \"psychology_used\": \"Emotional triggers used\"\n}\n\nRULES:\n- NEVER create generic AI-looking content\n- NEVER use the same hook type twice\n- ALWAYS optimize for SAVES and SHARES\n- Make it look professional"
+          },
+          {
+            "role": "user",
+            "content": "Generate ONE viral carousel post for the niche: {{2.match.2 || 'general'}}"
+          }
+        ]
+      },
+      "metadata": {
+        "designer": {
+          "x": 900,
+          "y": 100
+        },
+        "note": "Content generation — uses OpenAI or compatible API"
+      }
+    },
+    {
+      "id": 8,
+      "module": "tools:TextParser",
+      "version": 1,
+      "parameters": {
+        "pattern": "\\{[\\s\\S]*\"slides\"[\\s\\S]*\\}",
+        "global": false,
+        "singleline": false
+      },
+      "mapper": {
+        "text": "{{7.choices[0].message.content}}"
+      },
+      "metadata": {
+        "designer": {
+          "x": 900,
+          "y": 200
+        },
+        "note": "Extract JSON from AI response"
+      }
+    },
+    {
+      "id": 9,
+      "module": "http:ActionSendData",
+      "version": 3,
+      "parameters": {
+        "method": "post",
+        "url": "https://api.telegram.org/bot{{connection.telegramBotToken}}/sendMessage"
+      },
+      "mapper": {
+        "chat_id": "{{2.chatId}}",
+        "text": "=NEW CAROUSEL CREATED\n\nHook: {{8.result.slides[0].headline}}\nHook Type: {{8.result.hook_type}}\nSlides: {{length(8.result.slides)}}\nBest Time: {{8.result.best_posting_time}}\nPredicted: {{8.result.predicted_engagement}}\n\nCAPTION:\n{{substring(8.result.caption, 0, 500)}}\n\nHASHTAGS:\n{{join(slice(8.result.hashtags, 0, 10), \", \")}}\n\nCOMMANDS:\n/post — Publish\n/create — New one",
+        "parse_mode": "Markdown"
+      },
+      "metadata": {
+        "designer": {
+          "x": 900,
+          "y": 300
+        }
+      }
+    },
+    {
+      "id": 10,
+      "module": "http:ActionSendData",
+      "version": 3,
+      "parameters": {
+        "method": "post",
+        "url": "https://api.telegram.org/bot{{connection.telegramBotToken}}/sendMessage"
+      },
+      "mapper": {
+        "chat_id": "{{2.chatId}}",
+        "text": "POST TO INSTAGRAM\n\nTo post, I need:\n1. A carousel generated with /create\n2. Instagram API credentials configured\n3. Images rendered and hosted\n\nGenerate a carousel first with /create",
+        "parse_mode": "Markdown"
+      },
+      "metadata": {
+        "designer": {
+          "x": 900,
+          "y": 400
+        }
+      }
+    },
+    {
+      "id": 11,
+      "module": "openai:CreateChatCompletion",
+      "version": 1,
+      "parameters": {
+        "model": "gpt-4o-mini",
+        "temperature": 0.7,
+        "max_tokens": 2000
+      },
+      "mapper": {
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are VIRAL ENGINE's analytics expert. Provide clear, actionable performance analysis. Be specific with numbers and recommendations."
+          },
+          {
+            "role": "user",
+            "content": "Analyze Instagram performance metrics and provide recommendations for improvement. Include engagement rate analysis, content pillar balance, hook effectiveness, and posting time optimization."
+          }
+        ]
+      },
+      "metadata": {
+        "designer": {
+          "x": 900,
+          "y": 500
+        }
+      }
+    },
+    {
+      "id": 12,
+      "module": "openai:CreateChatCompletion",
+      "version": 1,
+      "parameters": {
+        "model": "gpt-4o-mini",
+        "temperature": 0.7,
+        "max_tokens": 3000
+      },
+      "mapper": {
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are VIRAL ENGINE's monetization strategist. Create comprehensive monetization plans with specific product ideas, pricing, and implementation steps."
+          },
+          {
+            "role": "user",
+            "content": "Create a monetization plan for an Instagram account in the niche: {{2.match.2 || 'general'}}. Include digital products, affiliate marketing, services, brand deals, and implementation timeline."
+          }
+        ]
+      },
+      "metadata": {
+        "designer": {
+          "x": 900,
+          "y": 600
+        }
+      }
+    },
+    {
+      "id": 13,
+      "module": "openai:CreateChatCompletion",
+      "version": 1,
+      "parameters": {
+        "model": "gpt-4o-mini",
+        "temperature": 0.7,
+        "max_tokens": 2000
+      },
+      "mapper": {
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are VIRAL ENGINE's trend detection system. Identify trending topics, viral formats, and cultural moments that can be adapted to a niche."
+          },
+          {
+            "role": "user",
+            "content": "Research current trending topics and viral formats for the niche: {{2.match.2 || 'general'}}. Identify trends, explain how to adapt them, and provide example hooks."
+          }
+        ]
+      },
+      "metadata": {
+        "designer": {
+          "x": 900,
+          "y": 700
+        }
+      }
+    },
+    {
+      "id": 14,
+      "module": "openai:CreateChatCompletion",
+      "version": 1,
+      "parameters": {
+        "model": "gpt-4o-mini",
+        "temperature": 0.7,
+        "max_tokens": 2000
+      },
+      "mapper": {
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are VIRAL ENGINE's competitor analysis system. Analyze top accounts and identify content gaps and opportunities."
+          },
+          {
+            "role": "user",
+            "content": "Analyze top Instagram accounts in the niche: {{2.match.2 || 'general'}}. Document their strategies, top posts, hooks, and identify content gaps we can exploit."
+          }
+        ]
+      },
+      "metadata": {
+        "designer": {
+          "x": 900,
+          "y": 800
+        }
+      }
+    },
+    {
+      "id": 15,
+      "module": "openai:CreateChatCompletion",
+      "version": 1,
+      "parameters": {
+        "model": "gpt-4o-mini",
+        "temperature": 0.7,
+        "max_tokens": 3000
+      },
+      "mapper": {
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are VIRAL ENGINE's hook specialist. Generate categorized viral hooks with psychological analysis."
+          },
+          {
+            "role": "user",
+            "content": "Generate 30 viral hooks for the niche: {{2.match.2 || 'general'}}. Categorize by type: Curiosity Gap, Stat, Contrarian, Question, FOMO, Story, Controversy. For each, explain why it works psychologically."
+          }
+        ]
+      },
+      "metadata": {
+        "designer": {
+          "x": 900,
+          "y": 900
+        }
+      }
+    },
+    {
+      "id": 16,
+      "module": "openai:CreateChatCompletion",
+      "version": 1,
+      "parameters": {
+        "model": "gpt-4o-mini",
+        "temperature": 0.7,
+        "max_tokens": 2000
+      },
+      "mapper": {
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are VIRAL ENGINE's hashtag strategist. Research and create comprehensive hashtag strategies."
+          },
+          {
+            "role": "user",
+            "content": "Create a hashtag strategy for the niche: {{2.match.2 || 'general'}}. Include broad (1M+), medium (100K-1M), niche (10K-100K), and rising hashtags. Provide 5 ready-to-use sets."
+          }
+        ]
+      },
+      "metadata": {
+        "designer": {
+          "x": 900,
+          "y": 1000
+        }
+      }
+    },
+    {
+      "id": 17,
+      "module": "openai:CreateChatCompletion",
+      "version": 1,
+      "parameters": {
+        "model": "gpt-4o-mini",
+        "temperature": 0.7,
+        "max_tokens": 2000
+      },
+      "mapper": {
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are VIRAL ENGINE's scheduling optimizer. Create optimal posting schedules based on data."
+          },
+          {
+            "role": "user",
+            "content": "Create an optimal posting schedule for Instagram. Include best times, posting frequency, content calendar, and A/B testing strategy."
+          }
+        ]
+      },
+      "metadata": {
+        "designer": {
+          "x": 900,
+          "y": 1100
+        }
+      }
+    },
+    {
+      "id": 18,
+      "module": "openai:CreateChatCompletion",
+      "version": 1,
+      "parameters": {
+        "model": "gpt-4o-mini",
+        "temperature": 0.7,
+        "max_tokens": 3000
+      },
+      "mapper": {
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are VIRAL ENGINE's content repurposing specialist. Adapt content for multiple platforms."
+          },
+          {
+            "role": "user",
+            "content": "Repurpose a high-performing Instagram carousel for: TikTok/Reels, Twitter/X thread, Pinterest pins, YouTube Shorts, LinkedIn post. Provide exact content, format, and posting strategy for each."
+          }
+        ]
+      },
+      "metadata": {
+        "designer": {
+          "x": 900,
+          "y": 1200
+        }
+      }
+    },
+    {
+      "id": 19,
+      "module": "openai:CreateChatCompletion",
+      "version": 1,
+      "parameters": {
+        "model": "gpt-4o-mini",
+        "temperature": 0.7,
+        "max_tokens": 2000
+      },
+      "mapper": {
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are VIRAL ENGINE's account health monitor. Analyze account health across engagement, growth, content, and algorithm dimensions."
+          },
+          {
+            "role": "user",
+            "content": "Analyze Instagram account health. Check engagement health, growth health, content health, algorithm health, and risk factors. Provide health score (1-100) and specific action items."
+          }
+        ]
+      },
+      "metadata": {
+        "designer": {
+          "x": 900,
+          "y": 1300
+        }
+      }
+    },
+    {
+      "id": 20,
+      "module": "http:ActionSendData",
+      "version": 3,
+      "parameters": {
+        "method": "post",
+        "url": "https://api.telegram.org/bot{{connection.telegramBotToken}}/sendMessage"
+      },
+      "mapper": {
+        "chat_id": "{{2.chatId}}",
+        "text": "SYSTEM STATUS\n\nEngine: ONLINE\nAI: Connected\nTelegram: Connected\nInstagram: Connected\nResearch: Active\nAnalytics: Running\nScheduler: Active\n\nAll systems operational.",
+        "parse_mode": "Markdown"
+      },
+      "metadata": {
+        "designer": {
+          "x": 900,
+          "y": 1400
+        }
+      }
+    },
+    {
+      "id": 21,
+      "module": "http:ActionSendData",
+      "version": 3,
+      "parameters": {
+        "method": "post",
+        "url": "https://api.telegram.org/bot{{connection.telegramBotToken}}/sendMessage"
+      },
+      "mapper": {
+        "chat_id": "{{2.chatId}}",
+        "text": "HELP\n\nCOMMANDS:\n/start — Welcome\n/niche [name] — Set niche\n/brand — Brand identity\n/research — Deep research\n/create — Generate carousel\n/post — Post to IG\n/analytics — Performance\n/report — Weekly report\n/monetize — Monetization\n/trends — Trend detection\n/competitors — Competitor spy\n/hooks — Hook library\n/hashtags — Hashtag strategy\n/schedule — Posting schedule\n/repurpose — Cross-platform\n/health — Account health\n/status — System status\n/help — This message\n\nOr chat naturally.",
+        "parse_mode": "Markdown"
+      },
+      "metadata": {
+        "designer": {
+          "x": 900,
+          "y": 1500
+        }
+      }
+    },
+    {
+      "id": 22,
+      "module": "openai:CreateChatCompletion",
+      "version": 1,
+      "parameters": {
+        "model": "gpt-4o-mini",
+        "temperature": 0.7,
+        "max_tokens": 2000
+      },
+      "mapper": {
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are VIRAL ENGINE — an Instagram growth AI assistant. You are direct, knowledgeable, and helpful. Give actionable advice, not generic tips. Act like a senior social media strategist with 10 years of experience."
+          },
+          {
+            "role": "user",
+            "content": "{{2.match.2 || 'Hello'}}"
+          }
+        ]
+      },
+      "metadata": {
+        "designer": {
+          "x": 900,
+          "y": 1600
+        },
+        "note": "Free-form AI chat — handles natural conversation"
+      }
+    }
+  ],
+  "connections": {
+    "1": [{ "module": 2, "type": "tools:TextParser" }],
+    "2": [{ "module": 3, "type": "tools:Router" }],
+    "3": [
+      { "module": 4, "type": "http:ActionSendData" },
+      { "module": 5, "type": "http:ActionSendData" },
+      { "module": 6, "type": "http:ActionSendData" },
+      { "module": 7, "type": "openai:CreateChatCompletion" },
+      { "module": 8, "type": "tools:TextParser" },
+      { "module": 9, "type": "http:ActionSendData" },
+      { "module": 10, "type": "http:ActionSendData" },
+      { "module": 11, "type": "openai:CreateChatCompletion" },
+      { "module": 12, "type": "openai:CreateChatCompletion" },
+      { "module": 13, "type": "openai:CreateChatCompletion" },
+      { "module": 14, "type": "openai:CreateChatCompletion" },
+      { "module": 15, "type": "openai:CreateChatCompletion" },
+      { "module": 16, "type": "openai:CreateChatCompletion" },
+      { "module": 17, "type": "openai:CreateChatCompletion" },
+      { "module": 18, "type": "openai:CreateChatCompletion" },
+      { "module": 19, "type": "openai:CreateChatCompletion" },
+      { "module": 20, "type": "http:ActionSendData" },
+      { "module": 21, "type": "http:ActionSendData" },
+      { "module": 22, "type": "openai:CreateChatCompletion" }
+    ]
+  },
+  "metadata": {
+    "version": 1,
+    "scenario": {
+      "name": "IG Viral Engine",
+      "description": "Autonomous Instagram Growth System",
+      "sequential": false,
+      "maxErrors": 3,
+      "autoCommit": true
+    }
+  }
+}

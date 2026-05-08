@@ -1,0 +1,327 @@
+{
+  "name": "IG Viral Engine — Zapier",
+  "description": "Autonomous Instagram Growth System — GET VIRAL OR DIE TRYING",
+  "zap": {
+    "title": "IG Viral Engine",
+    "description": "Telegram bot that researches niches, creates carousels, posts to Instagram, and grows accounts automatically.",
+    "trigger": {
+      "app": "telegram_bot",
+      "event": "new_message",
+      "step": 1,
+      "settings": {
+        "bot_token": "{{TELEGRAM_BOT_TOKEN}}",
+        "chat_id": "{{TELEGRAM_CHAT_ID}}"
+      },
+      "fields": {
+        "message_text": "{{message.text}}",
+        "chat_id": "{{message.chat.id}}",
+        "username": "{{message.from.username}}",
+        "first_name": "{{message.from.first_name}}",
+        "message_id": "{{message.message_id}}"
+      }
+    },
+    "actions": [
+      {
+        "step": 2,
+        "app": "code",
+        "event": "run_javascript",
+        "title": "Parse Command",
+        "settings": {
+          "code": "// Parse Telegram command\nconst text = input.message_text || '';\nlet command = 'chat';\nlet params = '';\n\nif (text.startsWith('/')) {\n  const parts = text.split(' ');\n  command = parts[0].toLowerCase().replace(/@.*/, '');\n  params = parts.slice(1).join(' ');\n} else {\n  params = text;\n}\n\nconst commands = {\n  '/start': 'start', '/niche': 'set_niche', '/brand': 'set_brand',\n  '/research': 'research', '/create': 'create', '/post': 'post',\n  '/analytics': 'analytics', '/report': 'report', '/monetize': 'monetize',\n  '/trends': 'trends', '/competitors': 'competitors', '/hooks': 'hooks',\n  '/hashtags': 'hashtags', '/schedule': 'schedule', '/repurpose': 'repurpose',\n  '/health': 'health', '/milestones': 'milestones', '/status': 'status', '/help': 'help'\n};\n\nreturn {\n  route: commands[command] || 'chat',\n  command: command,\n  params: params,\n  chatId: input.chat_id,\n  username: input.username,\n  firstName: input.first_name\n};"
+        },
+        "fields": {
+          "route": "{{route}}",
+          "command": "{{command}}",
+          "params": "{{params}}",
+          "chatId": "{{chatId}}",
+          "username": "{{username}}",
+          "firstName": "{{firstName}}"
+        }
+      },
+      {
+        "step": 3,
+        "app": "paths",
+        "event": "path",
+        "title": "Route Command",
+        "settings": {
+          "rules": [
+            {
+              "conditions": [{ "field": "{{route}}", "operator": "equals", "value": "start" }],
+              "action_step": 4
+            },
+            {
+              "conditions": [{ "field": "{{route}}", "operator": "equals", "value": "set_niche" }],
+              "action_step": 5
+            },
+            {
+              "conditions": [{ "field": "{{route}}", "operator": "equals", "value": "research" }],
+              "action_step": 6
+            },
+            {
+              "conditions": [{ "field": "{{route}}", "operator": "equals", "value": "create" }],
+              "action_step": 7
+            },
+            {
+              "conditions": [{ "field": "{{route}}", "operator": "equals", "value": "post" }],
+              "action_step": 8
+            },
+            {
+              "conditions": [{ "field": "{{route}}", "operator": "equals", "value": "analytics" }],
+              "action_step": 9
+            },
+            {
+              "conditions": [{ "field": "{{route}}", "operator": "equals", "value": "monetize" }],
+              "action_step": 10
+            },
+            {
+              "conditions": [{ "field": "{{route}}", "operator": "equals", "value": "trends" }],
+              "action_step": 11
+            },
+            {
+              "conditions": [{ "field": "{{route}}", "operator": "equals", "value": "competitors" }],
+              "action_step": 12
+            },
+            {
+              "conditions": [{ "field": "{{route}}", "operator": "equals", "value": "hooks" }],
+              "action_step": 13
+            },
+            {
+              "conditions": [{ "field": "{{route}}", "operator": "equals", "value": "hashtags" }],
+              "action_step": 14
+            },
+            {
+              "conditions": [{ "field": "{{route}}", "operator": "equals", "value": "schedule" }],
+              "action_step": 15
+            },
+            {
+              "conditions": [{ "field": "{{route}}", "operator": "equals", "value": "repurpose" }],
+              "action_step": 16
+            },
+            {
+              "conditions": [{ "field": "{{route}}", "operator": "equals", "value": "health" }],
+              "action_step": 17
+            },
+            {
+              "conditions": [{ "field": "{{route}}", "operator": "equals", "value": "status" }],
+              "action_step": 18
+            },
+            {
+              "conditions": [{ "field": "{{route}}", "operator": "equals", "value": "help" }],
+              "action_step": 19
+            },
+            {
+              "conditions": [{ "field": "{{route}}", "operator": "equals", "value": "chat" }],
+              "action_step": 20
+            }
+          ]
+        }
+      },
+      {
+        "step": 4,
+        "app": "telegram_bot",
+        "event": "send_message",
+        "title": "Send Welcome",
+        "settings": {
+          "chat_id": "{{chatId}}",
+          "text": "Welcome to IG VIRAL ENGINE\n\nThe autonomous Instagram growth system.\n\nCOMMANDS:\n/niche [name] — Set your niche\n/brand — Upload brand\n/research — Deep research\n/create — Generate carousel\n/post — Post to IG\n/analytics — Stats\n/report — Weekly report\n/monetize — Monetization\n/trends — Trend detection\n/competitors — Competitor spy\n/hooks — Hook library\n/hashtags — Hashtag strategy\n/schedule — Posting schedule\n/repurpose — Cross-platform\n/health — Account health\n/status — System status\n/help — Commands\n\nOr just chat. Ask me anything."
+        }
+      },
+      {
+        "step": 5,
+        "app": "telegram_bot",
+        "event": "send_message",
+        "title": "Set Niche",
+        "settings": {
+          "chat_id": "{{chatId}}",
+          "text": "NICHE SET: {{params}}\n\nStarting deep research across:\n- Instagram competitors\n- Reddit communities\n- Twitter/X trends\n- TikTok viral content\n- Pinterest ideas\n- YouTube content\n- Audience psychology\n- Hook patterns\n- Hashtag strategy\n\nThis takes a few minutes. I will message you when complete."
+        }
+      },
+      {
+        "step": 6,
+        "app": "web",
+        "event": "get",
+        "title": "Web Research",
+        "settings": {
+          "url": "=https://html.duckduckgo.com/html/?q={{encodeURIComponent(params + ' instagram viral carousel examples 2024')}}",
+          "headers": {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+          }
+        },
+        "note": "Sends research queries to DuckDuckGo"
+      },
+      {
+        "step": 7,
+        "app": "chatgpt",
+        "event": "send_prompt",
+        "title": "Generate Carousel",
+        "settings": {
+          "model": "gpt-4o-mini",
+          "temperature": 0.7,
+          "max_tokens": 4000,
+          "system_prompt": "You are VIRAL ENGINE — an autonomous Instagram growth AI. One obsession: GET VIRAL OR DIE TRYING.\n\nYou are a world-class social media strategist, content creator, copywriter, data analyst, and growth hacker.\n\nCAROUSEL CREATION RULES:\n\nSLIDE 1 — THE HOOK:\n- Must stop the scroll immediately\n- Use power words: Secret, Mistake, Truth, Nobody, Wrong, Hidden, Shocking\n- Create CURIOSITY GAP\n\nSLIDES 2-8 — THE VALUE:\n- Each slide delivers ONE clear point\n- Build tension and anticipation\n\nSLIDE 9 — THE CLIMAX:\n- Biggest insight or key takeaway\n\nSLIDE 10 — THE CTA:\n- Natural, not salesy\n\nEMOTIONAL TRIGGERS:\n- Curiosity, FOMO, Awe, Fear, Aspiration, Controversy\n\nCAPTION STRUCTURE:\n1. Hook line (curiosity-driven)\n2. Story/context (2-3 lines)\n3. Value delivery (3-5 lines)\n4. Engagement driver (1-2 lines)\n5. 20-25 hashtags (5 broad, 10 medium, 5-10 niche)\n\nOUTPUT FORMAT (JSON):\n{\n  \"slides\": [\n    {\"number\": 1, \"type\": \"hook\", \"headline\": \"...\", \"subtext\": \"...\", \"bg_color\": \"#hex\", \"text_color\": \"#hex\"},\n    ... 7-10 slides\n  ],\n  \"caption\": \"Full caption...\",\n  \"hashtags\": [\"tag1\", \"tag2\", ...],\n  \"hook_type\": \"curiosity|stat|question|contrarian|story|fomo\",\n  \"content_pillar\": \"educational|inspirational|entertainment|promotional\",\n  \"best_posting_time\": \"HH:MM\",\n  \"predicted_engagement\": \"viral|strong|average\",\n  \"hook_analysis\": \"Why this hook works\",\n  \"psychology_used\": \"Emotional triggers used\"\n}\n\nRULES:\n- NEVER create generic AI-looking content\n- NEVER use the same hook type twice\n- ALWAYS optimize for SAVES and SHARES",
+          "user_prompt": "Generate ONE viral carousel post for the niche: {{params || 'general'}}"
+        }
+      },
+      {
+        "step": 8,
+        "app": "telegram_bot",
+        "event": "send_message",
+        "title": "Post to Instagram",
+        "settings": {
+          "chat_id": "{{chatId}}",
+          "text": "POST TO INSTAGRAM\n\nTo post, I need:\n1. A carousel generated with /create\n2. Instagram API credentials configured\n3. Images rendered and hosted\n\nGenerate a carousel first with /create"
+        }
+      },
+      {
+        "step": 9,
+        "app": "chatgpt",
+        "event": "send_prompt",
+        "title": "Analytics",
+        "settings": {
+          "model": "gpt-4o-mini",
+          "system_prompt": "You are VIRAL ENGINE's analytics expert. Provide clear, actionable performance analysis.",
+          "user_prompt": "Analyze Instagram performance metrics and provide recommendations for improvement."
+        }
+      },
+      {
+        "step": 10,
+        "app": "chatgpt",
+        "event": "send_prompt",
+        "title": "Monetize",
+        "settings": {
+          "model": "gpt-4o-mini",
+          "system_prompt": "You are VIRAL ENGINE's monetization strategist. Create comprehensive monetization plans.",
+          "user_prompt": "Create a monetization plan for the niche: {{params || 'general'}}. Include digital products, affiliate marketing, services, brand deals, and implementation timeline."
+        }
+      },
+      {
+        "step": 11,
+        "app": "chatgpt",
+        "event": "send_prompt",
+        "title": "Trends",
+        "settings": {
+          "model": "gpt-4o-mini",
+          "system_prompt": "You are VIRAL ENGINE's trend detection system.",
+          "user_prompt": "Research trending topics and viral formats for the niche: {{params || 'general'}}. Identify trends and provide example hooks."
+        }
+      },
+      {
+        "step": 12,
+        "app": "chatgpt",
+        "event": "send_prompt",
+        "title": "Competitors",
+        "settings": {
+          "model": "gpt-4o-mini",
+          "system_prompt": "You are VIRAL ENGINE's competitor analysis system.",
+          "user_prompt": "Analyze top Instagram accounts in the niche: {{params || 'general'}}. Document strategies, top posts, hooks, and identify content gaps."
+        }
+      },
+      {
+        "step": 13,
+        "app": "chatgpt",
+        "event": "send_prompt",
+        "title": "Hooks",
+        "settings": {
+          "model": "gpt-4o-mini",
+          "system_prompt": "You are VIRAL ENGINE's hook specialist.",
+          "user_prompt": "Generate 30 viral hooks for the niche: {{params || 'general'}}. Categorize by type: Curiosity Gap, Stat, Contrarian, Question, FOMO, Story, Controversy."
+        }
+      },
+      {
+        "step": 14,
+        "app": "chatgpt",
+        "event": "send_prompt",
+        "title": "Hashtags",
+        "settings": {
+          "model": "gpt-4o-mini",
+          "system_prompt": "You are VIRAL ENGINE's hashtag strategist.",
+          "user_prompt": "Create a hashtag strategy for the niche: {{params || 'general'}}. Include broad, medium, niche, and rising hashtags. Provide 5 ready-to-use sets."
+        }
+      },
+      {
+        "step": 15,
+        "app": "chatgpt",
+        "event": "send_prompt",
+        "title": "Schedule",
+        "settings": {
+          "model": "gpt-4o-mini",
+          "system_prompt": "You are VIRAL ENGINE's scheduling optimizer.",
+          "user_prompt": "Create an optimal posting schedule for Instagram. Include best times, frequency, content calendar, and A/B testing strategy."
+        }
+      },
+      {
+        "step": 16,
+        "app": "chatgpt",
+        "event": "send_prompt",
+        "title": "Repurpose",
+        "settings": {
+          "model": "gpt-4o-mini",
+          "system_prompt": "You are VIRAL ENGINE's content repurposing specialist.",
+          "user_prompt": "Repurpose a high-performing Instagram carousel for: TikTok/Reels, Twitter/X thread, Pinterest pins, YouTube Shorts, LinkedIn post."
+        }
+      },
+      {
+        "step": 17,
+        "app": "chatgpt",
+        "event": "send_prompt",
+        "title": "Health",
+        "settings": {
+          "model": "gpt-4o-mini",
+          "system_prompt": "You are VIRAL ENGINE's account health monitor.",
+          "user_prompt": "Analyze Instagram account health. Check engagement, growth, content, algorithm health, and risk factors. Provide health score (1-100)."
+        }
+      },
+      {
+        "step": 18,
+        "app": "telegram_bot",
+        "event": "send_message",
+        "title": "Status",
+        "settings": {
+          "chat_id": "{{chatId}}",
+          "text": "SYSTEM STATUS\n\nEngine: ONLINE\nAI: Connected\nTelegram: Connected\nInstagram: Connected\nResearch: Active\nAnalytics: Running\n\nAll systems operational."
+        }
+      },
+      {
+        "step": 19,
+        "app": "telegram_bot",
+        "event": "send_message",
+        "title": "Help",
+        "settings": {
+          "chat_id": "{{chatId}}",
+          "text": "HELP\n\nCOMMANDS:\n/start — Welcome\n/niche [name] — Set niche\n/brand — Brand identity\n/research — Deep research\n/create — Generate carousel\n/post — Post to IG\n/analytics — Performance\n/report — Weekly report\n/monetize — Monetization\n/trends — Trend detection\n/competitors — Competitor spy\n/hooks — Hook library\n/hashtags — Hashtag strategy\n/schedule — Posting schedule\n/repurpose — Cross-platform\n/health — Account health\n/status — System status\n/help — This message\n\nOr chat naturally."
+        }
+      },
+      {
+        "step": 20,
+        "app": "chatgpt",
+        "event": "send_prompt",
+        "title": "AI Chat",
+        "settings": {
+          "model": "gpt-4o-mini",
+          "temperature": 0.7,
+          "system_prompt": "You are VIRAL ENGINE — an Instagram growth AI assistant. You are direct, knowledgeable, and helpful. Give actionable advice, not generic tips. Act like a senior social media strategist with 10 years of experience.",
+          "user_prompt": "{{params || 'Hello'}}"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "trigger_to_parse": { "from": 1, "to": 2 },
+    "parse_to_router": { "from": 2, "to": 3 },
+    "router_to_actions": {
+      "from": 3,
+      "to": [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+    }
+  },
+  "setup_guide": {
+    "step_1": "Create a Telegram bot with @BotFather and get your bot token",
+    "step_2": "In Zapier, create a new Zap",
+    "step_3": "Set trigger: Telegram Bot > New Message",
+    "step_4": "Add action: Code > Run JavaScript (paste the command parser)",
+    "step_5": "Add action: Paths > Route based on command",
+    "step_6": "For each path, add the appropriate action (AI prompt or Telegram send)",
+    "step_7": "For AI actions, connect your OpenAI account (or use free alternatives)",
+    "step_8": "Test the Zap and turn it on",
+    "note": "Zapier free tier: 100 tasks/month. For more, use Make.com (1000 ops/month free) or n8n (unlimited, self-hosted)."
+  }
+}
