@@ -10,13 +10,14 @@ Researches your niche, creates professional carousels, posts to Instagram, tests
 
 ## What It Does
 
-- **Deep Niche Research** — Studies your niche across hundreds of sources. Learns audience psychology, viral hooks, competitor strategies, and trending topics.
+- **Deep Niche Research** — Studies your niche across hundreds of sources. Uses web search AND browser to scrape Instagram, Reddit, Twitter/X, TikTok, Pinterest, YouTube, and Google Trends. Learns audience psychology, viral hooks, competitor strategies, and trending topics.
 - **Carousel Generation** — Creates professional carousels using HTML, CSS, and JavaScript. Matches your brand identity exactly.
 - **Auto-Posting** — Publishes to Instagram at optimal times via the Instagram Graph API.
 - **A/B Testing** — Tests hooks, formats, captions, and posting times. Every post improves the next.
 - **Analytics Tracking** — Monitors likes, comments, saves, shares, and follower growth.
 - **Monetization Alerts** — Suggests products, pricing, and strategies when your account is ready.
 - **Telegram Interface** — Control everything from Telegram. Commands or natural conversation.
+- **Multi-Provider AI** — Uses Groq, Gemini, Ollama, or HuggingFace. Falls back automatically if one fails.
 
 ---
 
@@ -89,16 +90,34 @@ IG_ACCESS_TOKEN=your_ig_access_token
 4. Configure the Telegram credential with your bot token
 5. Activate the workflow (toggle in top right)
 
-### Step 8: Install Ollama (Free AI)
+### Step 8: Set Up a Free AI Provider
 
-On your server:
+Choose one or more (the system tries them in order):
 
-```bash
-curl -fsSL https://ollama.ai/install.sh | sh
-ollama pull llama3
-```
+**Option A: Groq (Recommended — Fastest)**
+1. Go to https://console.groq.com
+2. Sign up (free)
+3. Create an API key
+4. Set `GROQ_API_KEY` in your environment variables
 
-This is your free AI brain. No API keys. No subscriptions.
+**Option B: Google Gemini**
+1. Go to https://aistudio.google.com
+2. Sign up (free)
+3. Get an API key
+4. Set `GEMINI_API_KEY` in your environment variables
+
+**Option C: Ollama (Local — No API Key)**
+1. On your server: `curl -fsSL https://ollama.ai/install.sh | sh`
+2. Pull model: `ollama pull llama3`
+3. Set `OLLAMA_URL=http://localhost:11434`
+
+**Option D: HuggingFace**
+1. Go to https://huggingface.co
+2. Sign up, go to Settings > Access Tokens
+3. Create a token
+4. Set `HF_API_KEY` in your environment variables
+
+You can set all four. If one fails, the system uses the next automatically.
 
 ### Step 9: Send Your First Command
 
@@ -190,13 +209,40 @@ ig-viral-engine/
 
 | Component | Tool | Cost |
 |-----------|------|------|
-| AI Brain | Ollama + llama3 | Free |
+| AI Brain | Groq / Gemini / Ollama / HuggingFace | Free |
 | Automation | n8n (self-hosted) | Free |
 | Chat | Telegram Bot API | Free |
 | IG Posting | Instagram Graph API | Free |
 | Rendering | Puppeteer | Free |
-| Research | HTTP requests + web scraping | Free |
+| Research | Web search + Browser scraping | Free |
 | Hosting | Render / Railway / Oracle | Free |
+
+### Free AI Providers
+
+The system supports multiple free AI providers and tries them in order:
+
+| Provider | Free Tier | Speed | Model |
+|----------|-----------|-------|-------|
+| Groq | 14,400 req/day | Fastest | llama3-70b |
+| Gemini | 15 req/min | Fast | gemini-2.0-flash |
+| Ollama | Unlimited | Variable | llama3 (local) |
+| HuggingFace | 1,000 req/day | Moderate | Meta-Llama-3-8B |
+
+Set one or all provider keys in your environment variables. The system falls back automatically if a provider fails.
+
+See [Free AI Providers](docs/FREE-AI-PROVIDERS.md) for setup details.
+
+### Browser Research
+
+The system scrapes these platforms during niche research:
+
+- Instagram (explore/tags)
+- Reddit (posts, communities, top content)
+- Twitter/X (trending topics, conversations)
+- TikTok (viral content)
+- Pinterest (pin ideas)
+- YouTube (content trends)
+- Google Trends (search interest data)
 
 ---
 

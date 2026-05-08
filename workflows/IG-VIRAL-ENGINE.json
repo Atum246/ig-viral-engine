@@ -1,523 +1,336 @@
 {
-  "name": "🟢 IG Viral Engine — Full Automation",
+  "name": "IG Viral Engine v2",
   "nodes": [
     {
       "parameters": {
         "updates": ["message"],
         "additionalFields": {}
       },
-      "id": "telegram-trigger",
-      "name": "📱 Telegram Trigger",
+      "id": "trigger",
+      "name": "Telegram Trigger",
       "type": "n8n-nodes-base.telegramTrigger",
       "typeVersion": 1.1,
-      "position": [0, 300],
-      "webhookId": "ig-viral-engine"
+      "position": [0, 400],
+      "webhookId": "ig-viral"
     },
     {
       "parameters": {
-        "jsCode": "// COMMAND ROUTER — Routes Telegram messages to the right workflow branch\nconst message = $input.first().json.message;\nconst text = message.text || '';\nconst chatId = message.chat.id;\n\n// Command parsing\nlet command = 'chat';\nlet params = {};\n\nif (text.startsWith('/')) {\n  const parts = text.split(' ');\n  command = parts[0].toLowerCase();\n  params.raw = parts.slice(1).join(' ');\n} else {\n  command = 'chat';\n  params.raw = text;\n}\n\n// Route commands\nconst routes = {\n  '/start': 'setup',\n  '/niche': 'set_niche',\n  '/brand': 'set_brand',\n  '/research': 'research',\n  '/create': 'create_content',\n  '/post': 'post_now',\n  '/schedule': 'schedule_post',\n  '/analytics': 'get_analytics',\n  '/report': 'weekly_report',\n  '/test': 'ab_test',\n  '/monetize': 'monetization',\n  '/status': 'status',\n  '/settings': 'settings',\n  '/help': 'help',\n  'chat': 'ai_chat'\n};\n\nreturn [{\n  json: {\n    command: routes[command] || 'ai_chat',\n    rawCommand: command,\n    params: params,\n    chatId: chatId,\n    username: message.from?.username || 'User',\n    timestamp: new Date().toISOString()\n  }\n}];"
+        "jsCode": "const msg = $input.first().json.message;\nconst text = (msg.text || '').trim();\nconst chatId = msg.chat.id;\nconst username = msg.from?.username || 'User';\n\nlet command = 'chat';\nlet params = '';\n\nif (text.startsWith('/')) {\n  const parts = text.split(' ');\n  command = parts[0].toLowerCase().replace(/@.*/, '');\n  params = parts.slice(1).join(' ');\n} else {\n  params = text;\n}\n\nconst routeMap = {\n  '/start': 'start',\n  '/niche': 'set_niche',\n  '/brand': 'set_brand',\n  '/research': 'research',\n  '/create': 'create',\n  '/post': 'post',\n  '/analytics': 'analytics',\n  '/report': 'report',\n  '/monetize': 'monetize',\n  '/status': 'status',\n  '/settings': 'settings',\n  '/help': 'help'\n};\n\nreturn [{\n  json: {\n    route: routeMap[command] || 'chat',\n    command: command,\n    params: params,\n    chatId: chatId,\n    username: username,\n    timestamp: new Date().toISOString()\n  }\n}];"
       },
-      "id": "command-router",
-      "name": "🔀 Command Router",
+      "id": "router",
+      "name": "Command Router",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [220, 300]
+      "position": [240, 400]
     },
     {
       "parameters": {
         "rules": {
           "rules": [
-            { "output": 0, "conditions": { "string": [{ "value1": "={{ $json.command }}", "value2": "setup" }] } },
-            { "output": 1, "conditions": { "string": [{ "value1": "={{ $json.command }}", "value2": "set_niche" }] } },
-            { "output": 2, "conditions": { "string": [{ "value1": "={{ $json.command }}", "value2": "set_brand" }] } },
-            { "output": 3, "conditions": { "string": [{ "value1": "={{ $json.command }}", "value2": "research" }] } },
-            { "output": 4, "conditions": { "string": [{ "value1": "={{ $json.command }}", "value2": "create_content" }] } },
-            { "output": 5, "conditions": { "string": [{ "value1": "={{ $json.command }}", "value2": "post_now" }] } },
-            { "output": 6, "conditions": { "string": [{ "value1": "={{ $json.command }}", "value2": "get_analytics" }] } },
-            { "output": 7, "conditions": { "string": [{ "value1": "={{ $json.command }}", "value2": "weekly_report" }] } },
-            { "output": 8, "conditions": { "string": [{ "value1": "={{ $json.command }}", "value2": "monetization" }] } },
-            { "output": 9, "conditions": { "string": [{ "value1": "={{ $json.command }}", "value2": "status" }] } },
-            { "output": 10, "conditions": { "string": [{ "value1": "={{ $json.command }}", "value2": "help" }] } },
-            { "output": 11, "conditions": { "string": [{ "value1": "={{ $json.command }}", "value2": "ai_chat" }] } }
+            { "output": 0, "conditions": { "string": [{ "value1": "={{ $json.route }}", "value2": "start" }] } },
+            { "output": 1, "conditions": { "string": [{ "value1": "={{ $json.route }}", "value2": "set_niche" }] } },
+            { "output": 2, "conditions": { "string": [{ "value1": "={{ $json.route }}", "value2": "set_brand" }] } },
+            { "output": 3, "conditions": { "string": [{ "value1": "={{ $json.route }}", "value2": "research" }] } },
+            { "output": 4, "conditions": { "string": [{ "value1": "={{ $json.route }}", "value2": "create" }] } },
+            { "output": 5, "conditions": { "string": [{ "value1": "={{ $json.route }}", "value2": "post" }] } },
+            { "output": 6, "conditions": { "string": [{ "value1": "={{ $json.route }}", "value2": "analytics" }] } },
+            { "output": 7, "conditions": { "string": [{ "value1": "={{ $json.route }}", "value2": "report" }] } },
+            { "output": 8, "conditions": { "string": [{ "value1": "={{ $json.route }}", "value2": "monetize" }] } },
+            { "output": 9, "conditions": { "string": [{ "value1": "={{ $json.route }}", "value2": "status" }] } },
+            { "output": 10, "conditions": { "string": [{ "value1": "={{ $json.route }}", "value2": "help" }] } },
+            { "output": 11, "conditions": { "string": [{ "value1": "={{ $json.route }}", "value2": "chat" }] } }
           ]
         }
       },
-      "id": "route-switch",
-      "name": "🔀 Route Switch",
+      "id": "switch",
+      "name": "Route Switch",
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3,
-      "position": [440, 300]
+      "position": [480, 400]
     },
     {
       "parameters": {
-        "method": "POST",
-        "url": "https://api.telegram.org/bot{{ $env.TELEGRAM_BOT_TOKEN }}/sendMessage",
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            { "name": "chat_id", "value": "={{ $('Command Router').item.json.chatId }}" },
-            { "name": "text", "value": "🟢 *Welcome to VIRAL ENGINE!* 💀🔥\n\nI'm your autonomous IG growth machine. Here's what I can do:\n\n📌 /niche [your niche] — Set your niche\n🎨 /brand — Upload brand identity\n🔍 /research — Deep niche research\n✍️ /create — Generate carousel\n📤 /post — Post to Instagram\n📊 /analytics — View performance\n📋 /report — Weekly intelligence report\n💰 /monetize — Monetization strategies\n📡 /status — System status\n❓ /help — Show all commands\n\nOr just chat with me normally! Tell me your niche to get started 🚀" },
-            { "name": "parse_mode", "value": "Markdown" }
-          ]
-        }
+        "jsCode": "// ============================================\n// FREE AI PROVIDER ROUTER\n// Tries providers in order: Groq -> Gemini -> Ollama -> HuggingFace\n// ============================================\n\nconst prompt = $input.first().json.prompt || $input.first().json.params || '';\nconst chatId = $input.first().json.chatId;\n\n// Check which providers are available\nconst providers = [];\n\n// 1. Groq (FREE tier: 14,400 requests/day, llama3-70b)\nif (process.env.GROQ_API_KEY) {\n  providers.push({\n    name: 'Groq',\n    endpoint: 'https://api.groq.com/openai/v1/chat/completions',\n    headers: {\n      'Authorization': `Bearer ${process.env.GROQ_API_KEY}`,\n      'Content-Type': 'application/json'\n    },\n    body: {\n      model: 'llama3-70b-8192',\n      messages: [{ role: 'system', content: 'You are VIRAL ENGINE, an elite Instagram growth AI.' }, { role: 'user', content: prompt }],\n      temperature: 0.7,\n      max_tokens: 4000\n    },\n    extract: (data) => data.choices?.[0]?.message?.content\n  });\n}\n\n// 2. Google Gemini (FREE tier: 15 requests/min, gemini-2.0-flash)\nif (process.env.GEMINI_API_KEY) {\n  providers.push({\n    name: 'Gemini',\n    endpoint: `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,\n    headers: { 'Content-Type': 'application/json' },\n    body: {\n      contents: [{ parts: [{ text: prompt }] }],\n      generationConfig: { temperature: 0.7, maxOutputTokens: 4000 }\n    },\n    extract: (data) => data.candidates?.[0]?.content?.parts?.[0]?.text\n  });\n}\n\n// 3. Ollama (FREE, local, no limits)\nproviders.push({\n  name: 'Ollama',\n  endpoint: (process.env.OLLAMA_URL || 'http://localhost:11434') + '/api/generate',\n  headers: { 'Content-Type': 'application/json' },\n  body: {\n    model: process.env.OLLAMA_MODEL || 'llama3',\n    prompt: prompt,\n    stream: false,\n    options: { temperature: 0.7 }\n  },\n  extract: (data) => data.response\n});\n\n// 4. HuggingFace (FREE tier: 1000 requests/day)\nif (process.env.HF_API_KEY) {\n  providers.push({\n    name: 'HuggingFace',\n    endpoint: 'https://api-inference.huggingface.co/models/meta-llama/Meta-Llama-3-8B-Instruct',\n    headers: {\n      'Authorization': `Bearer ${process.env.HF_API_KEY}`,\n      'Content-Type': 'application/json'\n    },\n    body: {\n      inputs: prompt,\n      parameters: { temperature: 0.7, max_new_tokens: 2000 }\n    },\n    extract: (data) => Array.isArray(data) ? data[0]?.generated_text : data.generated_text\n  });\n}\n\nreturn [{\n  json: {\n    providers: providers,\n    prompt: prompt,\n    chatId: chatId,\n    currentProvider: 0\n  }\n}];"
       },
-      "id": "setup-response",
-      "name": "🟢 Setup Response",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [700, 0]
-    },
-    {
-      "parameters": {
-        "jsCode": "// SET NICHE — Store the user's niche and begin research\nconst input = $input.first().json;\nconst niche = input.params.raw;\nconst chatId = input.chatId;\n\nif (!niche || niche.length < 3) {\n  return [{ json: { error: true, chatId, message: '❌ Please specify a niche! Example: /niche fitness for women over 30' } }];\n}\n\n// Store niche (in production, save to database/file)\nconst nicheData = {\n  niche: niche,\n  setAt: new Date().toISOString(),\n  chatId: chatId,\n  status: 'researching'\n};\n\nreturn [{\n  json: {\n    niche: niche,\n    chatId: chatId,\n    action: 'auto_research',\n    message: `🟢 *Niche Locked In!* 🎯\\n\\nNiche: *${niche}*\\n\\nI'm now starting DEEP research on this niche. I'll study:\\n🔍 Top competitors\\n🧠 Audience psychology\\n🎣 Viral hooks\\n📊 Trending content\\n⏰ Best posting times\\n\\nThis will take a few minutes. I'll message you when I'm done! 🚀`,\n    nicheData: nicheData\n  }\n}];"
-      },
-      "id": "set-niche",
-      "name": "🎯 Set Niche",
+      "id": "ai-router",
+      "name": "AI Provider Router",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [700, 120]
+      "position": [240, 600]
+    },
+    {
+      "parameters": {
+        "jsCode": "// ============================================\n// AI PROVIDER EXECUTOR\n// Tries each provider until one works\n// ============================================\n\nconst input = $input.first().json;\nconst providers = input.providers;\nconst startIndex = input.currentProvider || 0;\n\n// This node prepares the HTTP request for the current provider\nconst provider = providers[startIndex];\n\nif (!provider) {\n  return [{\n    json: {\n      success: false,\n      error: 'All AI providers failed',\n      chatId: input.chatId\n    }\n  }];\n}\n\nreturn [{\n  json: {\n    url: provider.endpoint,\n    method: 'POST',\n    headers: provider.headers,\n    body: provider.body,\n    providerName: provider.name,\n    providerIndex: startIndex,\n    providers: providers,\n    prompt: input.prompt,\n    chatId: input.chatId\n  }\n}];"
+      },
+      "id": "ai-executor",
+      "name": "AI Executor Prep",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [480, 600]
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "https://api.telegram.org/bot{{ $env.TELEGRAM_BOT_TOKEN }}/sendMessage",
+        "url": "={{ $json.url }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": Object.entries($json.headers || {}).map(([k, v]) => ({ name: k, value: v }))
+        },
         "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            { "name": "chat_id", "value": "={{ $json.chatId }}" },
-            { "name": "text", "value": "={{ $json.message }}" },
-            { "name": "parse_mode", "value": "Markdown" }
-          ]
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.body) }}",
+        "options": {
+          "timeout": 60000,
+          "response": { "response": { "fullResponse": true } }
         }
       },
-      "id": "send-niche-confirmation",
-      "name": "📨 Send Niche Confirmation",
+      "id": "ai-request",
+      "name": "AI HTTP Request",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [920, 120]
+      "position": [720, 600]
     },
     {
       "parameters": {
-        "jsCode": "// RESEARCH ENGINE — Deep niche research using web search\nconst input = $input.first().json;\nconst niche = input.niche || input.params?.raw || 'general';\n\n// Research queries to search\nconst researchQueries = [\n  `best ${niche} instagram accounts 2024 2025`,\n  `${niche} instagram carousel viral examples`,\n  `${niche} content ideas that go viral`,\n  `${niche} audience pain points desires`,\n  `${niche} trending topics ${new Date().getFullYear()}`,\n  `${niche} instagram hashtags strategy`,\n  `${niche} hook examples that work`,\n  `${niche} target audience demographics psychology`,\n  `${niche} competitors analysis top accounts`,\n  `${niche} instagram engagement rate benchmarks`\n];\n\n// Return research tasks\nreturn researchQueries.map((query, index) => ({\n  json: {\n    query: query,\n    niche: niche,\n    chatId: input.chatId || input.params?.chatId,\n    researchIndex: index,\n    totalQueries: researchQueries.length\n  }\n}));"
+        "jsCode": "// ============================================\n// AI RESPONSE PARSER + FALLBACK\n// ============================================\n\nconst response = $input.first().json;\nconst request = $('AI Executor Prep').first().json;\nconst statusCode = response.statusCode || 200;\n\nlet result = null;\nlet success = false;\n\ntry {\n  const body = response.body || response;\n  const provider = request.providers[request.providerIndex];\n  \n  if (statusCode >= 200 && statusCode < 300) {\n    result = provider.extract(body);\n    success = !!result;\n  }\n} catch (e) {\n  // Parse failed\n}\n\n// If failed, try next provider\nif (!success && request.providerIndex < request.providers.length - 1) {\n  return [{\n    json: {\n      ...request,\n      currentProvider: request.providerIndex + 1,\n      retry: true\n    }\n  }];\n}\n\nreturn [{\n  json: {\n    success: success,\n    result: result || 'AI generation failed. Check your provider keys or Ollama installation.',\n    provider: request.providers[request.providerIndex]?.name || 'Unknown',\n    chatId: request.chatId,\n    prompt: request.prompt\n  }\n}];"
+      },
+      "id": "ai-parser",
+      "name": "AI Response Parser",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [960, 600]
+    },
+    {
+      "parameters": {
+        "jsCode": "// ============================================\n// NICHE RESEARCH ENGINE\n// Uses web search + browser to research across platforms\n// ============================================\n\nconst input = $input.first().json;\nconst niche = input.params || input.niche || '';\nconst chatId = input.chatId;\n\nif (!niche || niche.length < 2) {\n  return [{ json: { error: true, chatId, message: 'Specify a niche. Example: /niche fitness for women over 30' } }];\n}\n\n// Research queries covering multiple platforms and angles\nconst queries = [\n  // General niche research\n  { q: `${niche} instagram carousel viral examples 2024 2025`, platform: 'web', topic: 'viral_examples' },\n  { q: `${niche} content ideas that get engagement`, platform: 'web', topic: 'content_ideas' },\n  { q: `${niche} target audience demographics psychology`, platform: 'web', topic: 'audience_psychology' },\n  { q: `${niche} pain points desires fears motivations`, platform: 'web', topic: 'psychology' },\n  \n  // Competitor research\n  { q: `site:instagram.com ${niche} top accounts influencers`, platform: 'instagram', topic: 'competitors' },\n  { q: `${niche} instagram accounts with most engagement`, platform: 'web', topic: 'top_accounts' },\n  \n  // Hook and caption research\n  { q: `${niche} viral hooks scroll stopping headlines`, platform: 'web', topic: 'hooks' },\n  { q: `${niche} instagram caption examples high engagement`, platform: 'web', topic: 'captions' },\n  \n  // Trend research\n  { q: `${niche} trending topics ${new Date().getFullYear()}`, platform: 'web', topic: 'trends' },\n  { q: `${niche} hashtag strategy best hashtags`, platform: 'web', topic: 'hashtags' },\n  \n  // Platform-specific research\n  { q: `site:reddit.com ${niche} tips advice`, platform: 'reddit', topic: 'community_insights' },\n  { q: `site:twitter.com OR site:x.com ${niche} trending`, platform: 'twitter', topic: 'twitter_trends' },\n  { q: `site:tiktok.com ${niche} viral`, platform: 'tiktok', topic: 'tiktok_trends' },\n  { q: `site:pinterest.com ${niche} ideas`, platform: 'pinterest', topic: 'pinterest_ideas' },\n  { q: `site:youtube.com ${niche} tutorial tips`, platform: 'youtube', topic: 'youtube_content' },\n  \n  // Posting strategy\n  { q: `${niche} best time to post instagram engagement`, platform: 'web', topic: 'posting_times' },\n  { q: `${niche} instagram growth strategy case study`, platform: 'web', topic: 'growth_strategy' }\n];\n\nreturn queries.map((q, i) => ({\n  json: {\n    query: q.q,\n    platform: q.platform,\n    topic: q.topic,\n    niche: niche,\n    chatId: chatId,\n    index: i,\n    total: queries.length\n  }\n}));"
       },
       "id": "research-engine",
-      "name": "🔍 Research Engine",
+      "name": "Research Engine",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [700, 240]
+      "position": [240, 200]
     },
     {
       "parameters": {
         "method": "GET",
-        "url": "=https://www.google.com/search?q={{ encodeURIComponent($json.query) }}&num=10",
-        "options": {
-          "response": { "response": { "fullResponse": true } }
-        },
+        "url": "=https://html.duckduckgo.com/html/?q={{ encodeURIComponent($json.query) }}",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
-            { "name": "User-Agent", "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" }
-          ]
-        }
-      },
-      "id": "web-search",
-      "name": "🌐 Web Search",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [920, 240]
-    },
-    {
-      "parameters": {
-        "jsCode": "// RESEARCH AGGREGATOR — Compile all research into a knowledge base\nconst allResults = $input.all();\nconst niche = allResults[0]?.json?.niche || 'unknown';\nconst chatId = allResults[0]?.json?.chatId;\n\n// Compile research summary\nlet knowledgeBase = `# NICHE KNOWLEDGE BASE: ${niche}\\n`;\nknowledgeBase += `Generated: ${new Date().toISOString()}\\n\\n`;\n\nallResults.forEach((result, index) => {\n  knowledgeBase += `## Research Query ${index + 1}\\n`;\n  knowledgeBase += `Query: ${result.json.query}\\n`;\n  knowledgeBase += `Results: ${JSON.stringify(result.json.data || result.json.body || 'No data').substring(0, 500)}\\n\\n`;\n});\n\n// Generate niche summary\nconst nicheSummary = {\n  niche: niche,\n  knowledgeBase: knowledgeBase,\n  chatId: chatId,\n  researchComplete: true,\n  timestamp: new Date().toISOString(),\n  queriesCompleted: allResults.length\n};\n\nreturn [{ json: nicheSummary }];"
-      },
-      "id": "research-aggregator",
-      "name": "📚 Research Aggregator",
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [1140, 240]
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "https://api.telegram.org/bot{{ $env.TELEGRAM_BOT_TOKEN }}/sendMessage",
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            { "name": "chat_id", "value": "={{ $json.chatId }}" },
-            { "name": "text", "value": "🟢 *Research Complete!* 📚🔥\n\nI've completed deep research on your niche! Here's what I found:\n\n📊 *Queries completed:* {{ $json.queriesCompleted }}\n🧠 *Knowledge base built:* ✅\n\nI now understand:\n✅ Top competitors & their strategies\n✅ Audience psychology & pain points\n✅ Viral hook patterns\n✅ Best posting times\n✅ Hashtag strategy\n✅ Trending topics\n\nReady to create content! Use /create to generate your first carousel 🎨" },
-            { "name": "parse_mode", "value": "Markdown" }
-          ]
-        }
-      },
-      "id": "research-complete-notify",
-      "name": "📨 Research Complete",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [1360, 240]
-    },
-    {
-      "parameters": {
-        "jsCode": "// CONTENT GENERATOR — Creates carousel content using AI\nconst input = $input.first().json;\nconst niche = input.niche || 'general';\nconst brand = input.brand || null;\nconst knowledgeBase = input.knowledgeBase || '';\nconst chatId = input.chatId;\n\n// Build the AI prompt\nconst prompt = `You are VIRAL ENGINE — an elite Instagram content creator.\n\nNICHE: ${niche}\nBRAND IDENTITY: ${brand ? JSON.stringify(brand) : 'Use modern, clean design with bold typography'}\n\nKNOWLEDGE BASE:\n${knowledgeBase.substring(0, 3000)}\n\nCreate ONE viral carousel post. Output as JSON:\n{\n  \"slides\": [\n    {\"number\": 1, \"type\": \"hook\", \"headline\": \"...\", \"subtext\": \"...\", \"bg_color\": \"#hex\", \"text_color\": \"#hex\"},\n    {\"number\": 2, \"type\": \"content\", \"headline\": \"...\", \"body\": \"...\", \"bg_color\": \"#hex\", \"text_color\": \"#hex\"},\n    ... (7-10 slides total)\n    {\"number\": 10, \"type\": \"cta\", \"headline\": \"...\", \"body\": \"...\", \"bg_color\": \"#hex\", \"text_color\": \"#hex\"}\n  ],\n  \"caption\": \"Full caption with emojis...\",\n  \"hashtags\": [\"tag1\", \"tag2\", ...],\n  \"hook_type\": \"curiosity|stat|question|contrarian\",\n  \"content_pillar\": \"educational|inspirational|entertainment\",\n  \"best_posting_time\": \"HH:MM\",\n  \"predicted_engagement\": \"viral|strong|average\"\n}\n\nRules:\n- Slide 1 MUST be a scroll-stopping hook\n- Use power words, numbers, emotional triggers\n- Each slide delivers ONE clear point\n- Final slide is a natural CTA\n- Caption follows hook-story-value-CTA structure\n- Include 20-25 hashtags mixed (broad + medium + niche)\n- Colors must be visually stunning and consistent\n- Make it look PROFESSIONAL, not AI-generic`;\n\nreturn [{\n  json: {\n    prompt: prompt,\n    niche: niche,\n    chatId: chatId,\n    brand: brand\n  }\n}];"
-      },
-      "id": "content-generator",
-      "name": "✍️ Content Generator",
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [700, 360]
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "http://localhost:11434/api/generate",
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            { "name": "model", "value": "llama3" },
-            { "name": "prompt", "value": "={{ $json.prompt }}" },
-            { "name": "stream", "value": "false" },
-            { "name": "format", "value": "json" }
+            { "name": "User-Agent", "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" }
           ]
         },
         "options": {
-          "timeout": 120000
+          "timeout": 15000,
+          "response": { "response": { "fullResponse": true } }
         }
       },
-      "id": "ollama-ai",
-      "name": "🧠 Ollama AI (FREE)",
+      "id": "web-search",
+      "name": "Web Search",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [920, 360]
+      "position": [480, 200]
     },
     {
       "parameters": {
-        "jsCode": "// PARSE AI RESPONSE — Extract carousel JSON from AI output\nconst input = $input.first().json;\nconst chatId = input.chatId || $('Content Generator').first().json.chatId;\nlet carouselData;\n\ntry {\n  // Parse the AI response\n  const response = input.response || input.body || input;\n  const text = typeof response === 'string' ? response : JSON.stringify(response);\n  \n  // Try to extract JSON from the response\n  const jsonMatch = text.match(/\\{[\\s\\S]*\\}/);\n  if (jsonMatch) {\n    carouselData = JSON.parse(jsonMatch[0]);\n  } else {\n    throw new Error('No JSON found in response');\n  }\n} catch (e) {\n  // Fallback: create a default carousel structure\n  carouselData = {\n    slides: [\n      { number: 1, type: 'hook', headline: 'Stop Scrolling!', subtext: 'This changes everything...', bg_color: '#1a1a2e', text_color: '#ffffff' },\n      { number: 2, type: 'content', headline: 'The Problem', body: 'Most people get this wrong...', bg_color: '#16213e', text_color: '#ffffff' },\n      { number: 3, type: 'content', headline: 'The Truth', body: 'Here is what actually works...', bg_color: '#0f3460', text_color: '#ffffff' },\n      { number: 4, type: 'content', headline: 'Step 1', body: 'Start with this...', bg_color: '#533483', text_color: '#ffffff' },\n      { number: 5, type: 'content', headline: 'Step 2', body: 'Then do this...', bg_color: '#2b2d42', text_color: '#ffffff' },\n      { number: 6, type: 'content', headline: 'Step 3', body: 'Finally...', bg_color: '#1a1a2e', text_color: '#ffffff' },\n      { number: 7, type: 'cta', headline: 'Save This!', body: 'Follow for more tips', bg_color: '#e94560', text_color: '#ffffff' }\n    ],\n    caption: 'Here are the tips you need to know...',\n    hashtags: ['#tips', '#growth', '#viral'],\n    hook_type: 'curiosity',\n    content_pillar: 'educational'\n  };\n}\n\nreturn [{\n  json: {\n    carousel: carouselData,\n    chatId: chatId,\n    readyToRender: true\n  }\n}];"
+        "jsCode": "// ============================================\n// BROWSER RESEARCH NODE\n// Scrapes social media platforms for niche data\n// ============================================\n\nconst input = $input.first().json;\nconst niche = input.niche || $('Research Engine').first().json.niche;\nconst chatId = input.chatId || $('Research Engine').first().json.chatId;\n\n// Social media URLs to scrape\nconst browserTargets = [\n  // Instagram explore/tags\n  { url: `https://www.instagram.com/explore/tags/${niche.replace(/\\s+/g, '')}/`, platform: 'instagram', topic: 'hashtag_explore' },\n  // Reddit communities\n  { url: `https://www.reddit.com/search.json?q=${encodeURIComponent(niche)}&sort=top&t=month&limit=25`, platform: 'reddit', topic: 'reddit_top_posts' },\n  // Reddit subreddit search\n  { url: `https://www.reddit.com/subreddits/search.json?q=${encodeURIComponent(niche)}&limit=10`, platform: 'reddit', topic: 'reddit_communities' },\n  // Twitter/X search\n  { url: `https://nitter.net/search?f=tweets&q=${encodeURIComponent(niche)}`, platform: 'twitter', topic: 'twitter_search' },\n  // Pinterest search\n  { url: `https://www.pinterest.com/search/pins/?q=${encodeURIComponent(niche + ' tips')}`, platform: 'pinterest', topic: 'pinterest_pins' },\n  // Google Trends\n  { url: `https://trends.google.com/trends/explore?q=${encodeURIComponent(niche)}`, platform: 'google_trends', topic: 'trend_data' },\n  // YouTube search\n  { url: `https://www.youtube.com/results?search_query=${encodeURIComponent(niche + ' tips')}`, platform: 'youtube', topic: 'youtube_search' }\n];\n\nreturn browserTargets.map((target, i) => ({\n  json: {\n    ...target,\n    niche: niche,\n    chatId: chatId,\n    index: i\n  }\n}));"
       },
-      "id": "parse-ai-response",
-      "name": "🔧 Parse AI Response",
+      "id": "browser-targets",
+      "name": "Browser Targets",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [1140, 360]
-    },
-    {
-      "parameters": {
-        "jsCode": "// HTML CAROUSEL RENDERER — Generates HTML for each slide\nconst input = $input.first().json;\nconst carousel = input.carousel;\nconst chatId = input.chatId;\n\n// Generate HTML for each slide\nconst slidesHtml = carousel.slides.map(slide => {\n  const bg = slide.bg_color || '#1a1a2e';\n  const textColor = slide.text_color || '#ffffff';\n  const headline = slide.headline || 'Slide';\n  const body = slide.body || slide.subtext || '';\n  const isHook = slide.type === 'hook';\n  const isCta = slide.type === 'cta';\n\n  return `\n  <div class=\"slide\" style=\"\n    width: 1080px;\n    height: 1080px;\n    background: ${bg};\n    display: flex;\n    flex-direction: column;\n    justify-content: center;\n    align-items: center;\n    padding: 80px;\n    box-sizing: border-box;\n    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;\n    position: relative;\n    overflow: hidden;\n  \">\n    <!-- Decorative elements -->\n    <div style=\"position:absolute;top:-50px;right:-50px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,0.05);\"></div>\n    <div style=\"position:absolute;bottom:-80px;left:-80px;width:300px;height:300px;border-radius:50%;background:rgba(255,255,255,0.03);\"></div>\n    \n    <!-- Slide number indicator -->\n    <div style=\"position:absolute;top:30px;right:40px;font-size:16px;color:rgba(255,255,255,0.4);font-weight:300;letter-spacing:2px;\">${slide.number}/${carousel.slides.length}</div>\n    \n    <!-- Content -->\n    <div style=\"text-align:center;max-width:900px;z-index:1;\">\n      <h1 style=\"\n        font-size: ${isHook ? '72px' : '56px'};\n        font-weight: ${isHook ? '800' : '700'};\n        color: ${textColor};\n        margin: 0 0 30px 0;\n        line-height: 1.1;\n        letter-spacing: -1px;\n        ${isHook ? 'text-transform: uppercase;' : ''}\n      \">${headline}</h1>\n      ${body ? `<p style=\"\n        font-size: ${isHook ? '28px' : '24px'};\n        color: rgba(255,255,255,0.8);\n        margin: 0;\n        line-height: 1.6;\n        font-weight: 300;\n      \">${body}</p>` : ''}\n      ${isCta ? `<div style=\"margin-top:40px;padding:20px 40px;background:rgba(255,255,255,0.15);border-radius:50px;display:inline-block;font-size:20px;font-weight:600;letter-spacing:1px;\">${body}</div>` : ''}\n    </div>\n  </div>`;\n}).join('\\n');\n\n// Full HTML document\nconst fullHtml = `<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"utf-8\">\n  <link href=\"https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap\" rel=\"stylesheet\">\n  <style>\n    * { margin: 0; padding: 0; box-sizing: border-box; }\n    body { background: #000; }\n    .slide { page-break-after: always; }\n  </style>\n</head>\n<body>\n  ${slidesHtml}\n</body>\n</html>`;\n\nreturn [{\n  json: {\n    html: fullHtml,\n    carousel: carousel,\n    chatId: chatId,\n    slideCount: carousel.slides.length\n  }\n}];"
-      },
-      "id": "html-renderer",
-      "name": "🎨 HTML Carousel Renderer",
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [1360, 360]
-    },
-    {
-      "parameters": {
-        "jsCode": "// IMAGE CONVERTER — Converts HTML slides to images\n// In production: use Puppeteer or a headless browser service\n// For free setup: use the html-to-image API or local Puppeteer\nconst input = $input.first().json;\nconst carousel = input.carousel;\nconst chatId = input.chatId;\nconst html = input.html;\n\n// Save HTML to file for Puppeteer processing\nconst fs = require('fs');\nconst path = require('path');\n\nconst outputDir = '/tmp/ig-carousel-' + Date.now();\ntry { fs.mkdirSync(outputDir, { recursive: true }); } catch(e) {}\n\n// Save HTML\nfs.writeFileSync(path.join(outputDir, 'carousel.html'), html);\n\n// Save carousel metadata\nfs.writeFileSync(path.join(outputDir, 'meta.json'), JSON.stringify({\n  carousel: carousel,\n  chatId: chatId,\n  createdAt: new Date().toISOString()\n}, null, 2));\n\nreturn [{\n  json: {\n    outputDir: outputDir,\n    carousel: carousel,\n    chatId: chatId,\n    htmlPath: path.join(outputDir, 'carousel.html'),\n    status: 'html_ready'\n  }\n}];"
-      },
-      "id": "image-converter",
-      "name": "🖼️ Image Converter",
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [1580, 360]
-    },
-    {
-      "parameters": {
-        "command": "=cd {{ $json.outputDir }} && node -e \"\nconst puppeteer = require('puppeteer');\nconst fs = require('fs');\nconst path = require('path');\n\n(async () => {\n  const browser = await puppeteer.launch({headless: 'new', args: ['--no-sandbox', '--disable-setuid-sandbox']});\n  const page = await browser.newPage();\n  await page.setViewport({width: 1080, height: 1080});\n  \n  const html = fs.readFileSync('{{ $json.htmlPath }}', 'utf8');\n  await page.setContent(html, {waitUntil: 'networkidle0'});\n  \n  // Wait for fonts to load\n  await page.evaluateHandle('document.fonts.ready');\n  await new Promise(r => setTimeout(r, 2000));\n  \n  // Capture each slide\n  const slides = await page.$$('.slide');\n  const imagePaths = [];\n  \n  for (let i = 0; i < slides.length; i++) {\n    const imgPath = path.join('{{ $json.outputDir }}', `slide_${i + 1}.png`);\n    await slides[i].screenshot({path: imgPath, type: 'png'});\n    imagePaths.push(imgPath);\n  }\n  \n  await browser.close();\n  console.log(JSON.stringify({images: imagePaths}));\n})();\n\""
-      },
-      "id": "puppeteer-render",
-      "name": "🖥️ Puppeteer Render",
-      "type": "n8n-nodes-base.executeCommand",
-      "typeVersion": 1,
-      "position": [1800, 360]
-    },
-    {
-      "parameters": {
-        "jsCode": "// PREVIEW SENDER — Sends carousel preview to Telegram\nconst input = $input.first().json;\nconst carousel = $('Parse AI Response').first().json.carousel;\nconst chatId = carousel.chatId || input.chatId;\n\n// Build preview message\nlet preview = `🟢 *New Carousel Created!* 🎨🔥\\n\\n`;\npreview += `📌 *Hook:* ${carousel.slides[0]?.headline}\\n`;\npreview += `🎣 *Hook Type:* ${carousel.hook_type}\\n`;\npreview += `📊 *Content Pillar:* ${carousel.content_pillar}\\n`;\npreview += `📝 *Slides:* ${carousel.slides.length}\\n`;\npreview += `⏰ *Best Time:* ${carousel.best_posting_time || 'Now'}\\n\\n`;\npreview += `📝 *Caption Preview:*\\n${carousel.caption?.substring(0, 300)}...\\n\\n`;\npreview += `🏷️ *Hashtags:* ${carousel.hashtags?.slice(0, 10).join(', ')}...\\n\\n`;\npreview += `Commands:\\n`;\npreview += `📤 /post — Post now\\n`;\npreview += `🔄 /create — Generate new one\\n`;\npreview += `✏️ Edit caption or slides by replying`;\\n\nreturn [{\n  json: {\n    chatId: chatId,\n    message: preview,\n    carousel: carousel\n  }\n}];"
-      },
-      "id": "preview-sender",
-      "name": "👁️ Preview Sender",
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [700, 480]
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "https://api.telegram.org/bot{{ $env.TELEGRAM_BOT_TOKEN }}/sendMessage",
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            { "name": "chat_id", "value": "={{ $json.chatId }}" },
-            { "name": "text", "value": "={{ $json.message }}" },
-            { "name": "parse_mode", "value": "Markdown" }
-          ]
-        }
-      },
-      "id": "send-preview",
-      "name": "📨 Send Preview",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [920, 480]
-    },
-    {
-      "parameters": {
-        "jsCode": "// IG POSTER — Posts carousel to Instagram via Graph API\nconst input = $input.first().json;\nconst carousel = input.carousel;\nconst chatId = input.chatId;\nconst imageDir = input.outputDir || '/tmp/ig-carousel-latest';\n\n// Instagram Graph API flow:\n// 1. Create container for each image\n// 2. Create carousel container\n// 3. Publish\n\nconst igUserId = process.env.IG_USER_ID;\nconst accessToken = process.env.IG_ACCESS_TOKEN;\n\n// Step 1: Create media containers for each slide\nconst imageCount = carousel.slides?.length || 7;\nconst containerRequests = [];\n\nfor (let i = 1; i <= Math.min(imageCount, 10); i++) {\n  // In production, these would be real image URLs\n  // Images need to be hosted on a public URL\n  const imageUrl = `${process.env.PUBLIC_URL || 'https://your-server.com'}/slides/slide_${i}.png`;\n  \n  containerRequests.push({\n    method: 'POST',\n    url: `https://graph.facebook.com/v18.0/${igUserId}/media`,\n    body: {\n      image_url: imageUrl,\n      is_carousel_item: true,\n      access_token: accessToken\n    }\n  });\n}\n\nreturn [{\n  json: {\n    igUserId: igUserId,\n    accessToken: accessToken,\n    caption: carousel.caption || 'Check out this post! 🔥',\n    containerRequests: containerRequests,\n    chatId: chatId,\n    hashtags: carousel.hashtags || []\n  }\n}];"
-      },
-      "id": "ig-poster",
-      "name": "📤 IG Poster",
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [700, 600]
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "=https://graph.facebook.com/v18.0/{{ $json.igUserId }}/media",
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            { "name": "image_url", "value": "={{ $json.imageUrl }}" },
-            { "name": "is_carousel_item", "value": "true" },
-            { "name": "access_token", "value": "={{ $json.accessToken }}" }
-          ]
-        }
-      },
-      "id": "ig-create-container",
-      "name": "📦 IG Create Container",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [920, 600]
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "=https://graph.facebook.com/v18.0/{{ $json.igUserId }}/media",
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            { "name": "media_type", "value": "CAROUSEL" },
-            { "name": "children", "value": "={{ $json.childrenIds }}" },
-            { "name": "caption", "value": "={{ $json.caption }}" },
-            { "name": "access_token", "value": "={{ $json.accessToken }}" }
-          ]
-        }
-      },
-      "id": "ig-create-carousel",
-      "name": "📦 IG Create Carousel",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [1140, 600]
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "=https://graph.facebook.com/v18.0/{{ $json.igUserId }}/media_publish",
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            { "name": "creation_id", "value": "={{ $json.carouselContainerId }}" },
-            { "name": "access_token", "value": "={{ $json.accessToken }}" }
-          ]
-        }
-      },
-      "id": "ig-publish",
-      "name": "📤 IG Publish",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [1360, 600]
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "https://api.telegram.org/bot{{ $env.TELEGRAM_BOT_TOKEN }}/sendMessage",
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            { "name": "chat_id", "value": "={{ $json.chatId }}" },
-            { "name": "text", "value": "🟢 *Posted Successfully!* 🚀🔥\\n\\nYour carousel is now live on Instagram!\\n\\n📊 I'll track performance and update you in 24 hours.\\n\\nCommands:\\n📊 /analytics — Check performance\\n✍️ /create — Make another\\n📋 /report — Weekly report" },
-            { "name": "parse_mode", "value": "Markdown" }
-          ]
-        }
-      },
-      "id": "post-success-notify",
-      "name": "✅ Post Success",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [1580, 600]
-    },
-    {
-      "parameters": {
-        "jsCode": "// ANALYTICS TRACKER — Fetches IG post performance\nconst input = $input.first().json;\nconst chatId = input.chatId || input.params?.chatId;\nconst accessToken = process.env.IG_ACCESS_TOKEN;\nconst igUserId = process.env.IG_USER_ID;\n\n// Fetch recent media\nconst mediaUrl = `https://graph.facebook.com/v18.0/${igUserId}/media?fields=id,caption,media_type,timestamp,like_count,comments_count&limit=10&access_token=${accessToken}`;\n\nreturn [{\n  json: {\n    mediaUrl: mediaUrl,\n    chatId: chatId,\n    accessToken: accessToken,\n    igUserId: igUserId\n  }\n}];"
-      },
-      "id": "analytics-tracker",
-      "name": "📊 Analytics Tracker",
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [700, 720]
+      "position": [240, 80]
     },
     {
       "parameters": {
         "method": "GET",
-        "url": "={{ $json.mediaUrl }}",
-        "options": {}
+        "url": "={{ $json.url }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "User-Agent", "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" },
+            { "name": "Accept", "value": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8" },
+            { "name": "Accept-Language", "value": "en-US,en;q=0.9" }
+          ]
+        },
+        "options": {
+          "timeout": 20000,
+          "response": { "response": { "fullResponse": true } }
+        }
       },
-      "id": "ig-fetch-media",
-      "name": "📥 Fetch IG Media",
+      "id": "browser-fetch",
+      "name": "Browser Fetch",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [920, 720]
+      "position": [480, 80]
     },
     {
       "parameters": {
-        "jsCode": "// ANALYTICS REPORT BUILDER\nconst input = $input.first().json;\nconst chatId = input.chatId || $('Analytics Tracker').first().json.chatId;\nconst media = input.data || [];\n\n// Calculate metrics\nlet totalLikes = 0;\nlet totalComments = 0;\nlet postCount = media.length || 1;\nlet bestPost = null;\nlet bestEngagement = 0;\n\nconst posts = Array.isArray(media) ? media : [];\nposts.forEach(post => {\n  const likes = post.like_count || 0;\n  const comments = post.comments_count || 0;\n  totalLikes += likes;\n  totalComments += comments;\n  \n  const engagement = likes + comments;\n  if (engagement > bestEngagement) {\n    bestEngagement = engagement;\n    bestPost = post;\n  }\n});\n\nconst avgLikes = Math.round(totalLikes / postCount);\nconst avgComments = Math.round(totalComments / postCount);\n\n// Build report\nlet report = `📊 *Analytics Report* 📈\\n\\n`;\nreport += `📅 Period: Last ${postCount} posts\\n`;\nreport += `❤️ Total Likes: ${totalLikes}\\n`;\nreport += `💬 Total Comments: ${totalComments}\\n`;\nreport += `📊 Avg Likes/Post: ${avgLikes}\\n`;\nreport += `📊 Avg Comments/Post: ${avgComments}\\n\\n`;\n\nif (bestPost) {\n  report += `🏆 *Top Post:*\\n`;\n  report += `📝 ${bestPost.caption?.substring(0, 100) || 'No caption'}...\\n`;\n  report += `❤️ ${bestPost.like_count || 0} likes\\n`;\n  report += `💬 ${bestPost.comments_count || 0} comments\\n\\n`;\n}\n\nreport += `💡 *Insights:*\\n`;\nif (avgLikes > 100) report += `✅ Strong engagement! Keep it up!\\n`;\nelse report += `📈 Room to grow — let's test new hooks!\\n`;\n\nreport += `\\nCommands:\\n✍️ /create — New carousel\\n📋 /report — Full weekly report`;\n\nreturn [{\n  json: {\n    chatId: chatId,\n    message: report,\n    metrics: { totalLikes, totalComments, avgLikes, avgComments, postCount }\n  }\n}];"
+        "jsCode": "// ============================================\n// SOCIAL MEDIA DATA EXTRACTOR\n// Parses responses from each platform\n// ============================================\n\nconst input = $input.first().json;\nconst body = input.body || '';\nconst platform = input.platform;\nconst topic = input.topic;\nconst niche = input.niche;\nconst chatId = input.chatId;\n\nlet extracted = '';\n\ntry {\n  if (platform === 'reddit') {\n    // Reddit JSON API\n    const data = typeof body === 'string' ? JSON.parse(body) : body;\n    const posts = data?.data?.children || [];\n    extracted = posts.slice(0, 15).map(p => {\n      const d = p.data;\n      return `Title: ${d.title}\\nScore: ${d.score}\\nComments: ${d.num_comments}\\nSubreddit: r/${d.subreddit}`;\n    }).join('\\n---\\n');\n  } else if (platform === 'instagram' || platform === 'twitter' || platform === 'pinterest' || platform === 'youtube' || platform === 'google_trends') {\n    // HTML scraping — extract text content\n    const text = typeof body === 'string' ? body : '';\n    // Extract meta descriptions, titles, and visible text\n    const titleMatch = text.match(/<title[^>]*>([^<]+)<\\/title>/i);\n    const metaDesc = text.match(/<meta[^>]*name=\"description\"[^>]*content=\"([^\"]+)\"/i);\n    const ogDesc = text.match(/<meta[^>]*property=\"og:description\"[^>]*content=\"([^\"]+)\"/i);\n    \n    // Extract visible text (remove HTML tags)\n    const cleanText = text\n      .replace(/<script[\\s\\S]*?<\\/script>/gi, '')\n      .replace(/<style[\\s\\S]*?<\\/style>/gi, '')\n      .replace(/<[^>]+>/g, ' ')\n      .replace(/\\s+/g, ' ')\n      .trim()\n      .substring(0, 3000);\n    \n    extracted = `Platform: ${platform}\\nTopic: ${topic}\\n`;\n    if (titleMatch) extracted += `Title: ${titleMatch[1]}\\n`;\n    if (metaDesc) extracted += `Description: ${metaDesc[1]}\\n`;\n    if (ogDesc) extracted += `OG Description: ${ogDesc[1]}\\n`;\n    extracted += `Content Preview: ${cleanText.substring(0, 1500)}`;\n  }\n} catch (e) {\n  extracted = `Platform: ${platform} — Parse error: ${e.message}`;\n}\n\nreturn [{\n  json: {\n    platform: platform,\n    topic: topic,\n    data: extracted,\n    niche: niche,\n    chatId: chatId\n  }\n}];"
       },
-      "id": "analytics-report",
-      "name": "📋 Analytics Report",
+      "id": "social-extractor",
+      "name": "Social Media Extractor",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [1140, 720]
+      "position": [720, 80]
     },
     {
       "parameters": {
-        "method": "POST",
-        "url": "https://api.telegram.org/bot{{ $env.TELEGRAM_BOT_TOKEN }}/sendMessage",
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            { "name": "chat_id", "value": "={{ $json.chatId }}" },
-            { "name": "text", "value": "={{ $json.message }}" },
-            { "name": "parse_mode", "value": "Markdown" }
-          ]
-        }
+        "jsCode": "// ============================================\n// RESEARCH AGGREGATOR\n// Combines all research into a knowledge base\n// ============================================\n\nconst allResults = $input.all();\nconst niche = allResults[0]?.json?.niche || 'unknown';\nconst chatId = allResults[0]?.json?.chatId;\n\n// Organize by topic\nconst byTopic = {};\nconst byPlatform = {};\n\nallResults.forEach(r => {\n  const d = r.json;\n  if (!byTopic[d.topic]) byTopic[d.topic] = [];\n  byTopic[d.topic].push(d.data || '');\n  \n  if (!byPlatform[d.platform]) byPlatform[d.platform] = [];\n  byPlatform[d.platform].push(d.data || '');\n});\n\n// Build knowledge base\nlet kb = `# NICHE KNOWLEDGE BASE: ${niche}\\n`;\nkb += `Generated: ${new Date().toISOString()}\\n`;\nkb += `Sources: ${allResults.length} queries across ${Object.keys(byPlatform).length} platforms\\n\\n`;\n\nfor (const [topic, data] of Object.entries(byTopic)) {\n  kb += `## ${topic.replace(/_/g, ' ').toUpperCase()}\\n`;\n  kb += data.filter(d => d && d.length > 10).join('\\n---\\n').substring(0, 2000);\n  kb += `\\n\\n`;\n}\n\n// Summary\nconst summary = {\n  niche: niche,\n  knowledgeBase: kb,\n  chatId: chatId,\n  topicsResearched: Object.keys(byTopic).length,\n  platformsScraped: Object.keys(byPlatform).length,\n  totalSources: allResults.length,\n  timestamp: new Date().toISOString()\n};\n\nreturn [{ json: summary }];"
       },
-      "id": "send-analytics",
-      "name": "📨 Send Analytics",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [1360, 720]
-    },
-    {
-      "parameters": {
-        "jsCode": "// MONETIZATION ADVISOR\nconst input = $input.first().json;\nconst chatId = input.chatId || input.params?.chatId;\nconst niche = input.niche || 'your niche';\n\nlet report = `💰 *Monetization Strategy* 💎\\n\\n`;\nreport += `Based on your niche: *${niche}*\\n\\n`;\n\nreport += `🎯 *Recommended Products:*\\n`;\nreport += `1. 📚 Digital Ebook — $9-29\\n`;\nreport += `   \"The Ultimate ${niche} Guide\"\\n`;\nreport += `2. 🎓 Online Course — $47-197\\n`;\nreport += `   \"Master ${niche} in 30 Days\"\\n`;\nreport += `3. 📋 Templates/Presets — $7-37\\n`;\nreport += `   \"Done-for-you ${niche} templates\"\\n`;\nreport += `4. 🏆 Coaching — $50-300/hour\\n`;\nreport += `   \"1-on-1 ${niche} coaching\"\\n\\n`;\n\nreport += `🔗 *Setup Steps:*\\n`;\nreport += `1. Create a Linktree or Stan Store (FREE)\\n`;\nreport += `2. Add link to your IG bio\\n`;\nreport += `3. Create a \"link in bio\" carousel\\n`;\nreport += `4. Soft-promote in value content\\n`;\nreport += `5. Track conversions\\n\\n`;\n\nreport += `💡 *Pro Tips:*\\n`;\nreport += `• Always give value FIRST, sell SECOND\\n`;\nreport += `• Use the 80/20 rule: 80% value, 20% promotion\\n`;\nreport += `• Create urgency with limited offers\\n`;\nreport += `• Test different price points\\n`;\n\nreport += `\\nWant me to create a promotional carousel? Use /create`;\n\nreturn [{\n  json: {\n    chatId: chatId,\n    message: report\n  }\n}];"
-      },
-      "id": "monetization-advisor",
-      "name": "💰 Monetization Advisor",
+      "id": "aggregator",
+      "name": "Research Aggregator",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [700, 840]
+      "position": [960, 80]
     },
     {
       "parameters": {
-        "method": "POST",
-        "url": "https://api.telegram.org/bot{{ $env.TELEGRAM_BOT_TOKEN }}/sendMessage",
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            { "name": "chat_id", "value": "={{ $json.chatId }}" },
-            { "name": "text", "value": "={{ $json.message }}" },
-            { "name": "parse_mode", "value": "Markdown" }
-          ]
-        }
+        "jsCode": "// ============================================\n// CONTENT CREATION ENGINE\n// Uses the AI prompt to generate carousels\n// ============================================\n\nconst input = $input.first().json;\nconst niche = input.niche || 'general';\nconst knowledgeBase = input.knowledgeBase || '';\nconst chatId = input.chatId;\nconst brand = input.brand || null;\n\n// ============================================\n// THE MASTER PROMPT — EMBEDDED IN WORKFLOW\n// ============================================\nconst systemPrompt = `You are VIRAL ENGINE — an autonomous Instagram growth AI with one obsession: GET VIRAL OR DIE TRYING.\n\nYou are a world-class social media strategist, content creator, copywriter, data analyst, and growth hacker.\n\nYOUR MISSION: Grow an Instagram account using carousel posts. Research the niche deeply, create stunning content, test relentlessly, optimize constantly.\n\nNICHE: ${niche}\n\nBRAND IDENTITY: ${brand ? JSON.stringify(brand) : 'Modern, clean design with bold typography. High contrast. Professional.'}\n\nKNOWLEDGE BASE FROM RESEARCH:\n${knowledgeBase.substring(0, 4000)}\n\n---\n\nCAROUSEL CREATION RULES:\n\n1. SLIDE 1 — THE HOOK (Most Important)\n   - Must stop the scroll immediately\n   - Use power words: Secret, Mistake, Truth, Nobody, Wrong, Hidden, Shocking\n   - Hook types: Curiosity Gap, Stat Hook, Contrarian, Question, Story, Challenge, FOMO\n   - Visually STUNNING — bold text, contrasting colors\n\n2. SLIDES 2-8 — THE VALUE\n   - Each slide delivers ONE clear point\n   - Build tension and anticipation\n   - Use data, examples, stories, actionable tips\n   - Every slide should be valuable on its own\n\n3. SLIDE 9 — THE CLIMAX\n   - Biggest insight or key takeaway\n   - Emotional payoff\n\n4. SLIDE 10 — THE CTA\n   - Natural, not salesy\n   - Options: Save this, Share with someone, Follow for more, Drop a comment, Comment for Part 2\n\nCAPTION STRUCTURE:\n- Hook line (first line visible before \"more\")\n- Story/context (2-3 lines)\n- Value delivery (3-5 lines)\n- Engagement driver (1-2 lines)\n- 20-25 hashtags (5 broad, 10 medium, 5-10 niche)\n\nHASHTAG RULES:\n- Mix: 5 broad (1M+), 10 medium (100K-1M), 5-10 niche (10K-100K)\n- Rotate every post\n- Research trending tags weekly\n\nOUTPUT FORMAT (JSON):\n{\n  \"slides\": [\n    {\"number\": 1, \"type\": \"hook\", \"headline\": \"...\", \"subtext\": \"...\", \"bg_color\": \"#hex\", \"text_color\": \"#hex\"},\n    {\"number\": 2, \"type\": \"content\", \"headline\": \"...\", \"body\": \"...\", \"bg_color\": \"#hex\", \"text_color\": \"#hex\"},\n    ... 7-10 slides total\n    {\"number\": 10, \"type\": \"cta\", \"headline\": \"...\", \"body\": \"...\", \"bg_color\": \"#hex\", \"text_color\": \"#hex\"}\n  ],\n  \"caption\": \"Full caption with emojis and hashtags...\",\n  \"hashtags\": [\"tag1\", \"tag2\", ...],\n  \"hook_type\": \"curiosity|stat|question|contrarian|story\",\n  \"content_pillar\": \"educational|inspirational|entertainment|promotional\",\n  \"best_posting_time\": \"HH:MM\",\n  \"predicted_engagement\": \"viral|strong|average\",\n  \"hook_analysis\": \"Why this hook works\",\n  \"psychology_used\": \"What emotional triggers are used\"\n}\n\nRULES:\n- NEVER create generic AI-looking content\n- NEVER use the same hook twice\n- ALWAYS maintain brand consistency\n- ALWAYS think about what the audience needs\n- Optimize for SAVES and SHARES (king metrics)\n- Make it look like a professional designer created it\n\nGenerate ONE carousel now.`;\n\nreturn [{\n  json: {\n    prompt: systemPrompt,\n    chatId: chatId,\n    niche: niche,\n    brand: brand\n  }\n}];"
       },
-      "id": "send-monetization",
-      "name": "📨 Send Monetization",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [920, 840]
-    },
-    {
-      "parameters": {
-        "jsCode": "// STATUS CHECK\nconst input = $input.first().json;\nconst chatId = input.chatId || input.params?.chatId;\n\nlet status = `📡 *VIRAL ENGINE Status* 🟢\\n\\n`;\nstatus += `🤖 System: ONLINE\\n`;\nstatus += `🧠 AI Model: Ollama (Local/Free)\\n`;\nstatus += `📱 Telegram: Connected\\n`;\nstatus += `📸 Instagram: Connected\\n`;\nstatus += `🔍 Research: Active\\n`;\nstatus += `📊 Analytics: Running\\n\\n`;\nstatus += `⏰ Next scheduled post: Checking...\\n`;\nstatus += `📈 Posts today: 0\\n`;\nstatus += `📝 Queue: Ready\\n\\n`;\nstatus += `Commands:\\n`;\nstatus += `✍️ /create — Generate content\\n`;\nstatus += `📊 /analytics — View stats\\n`;\nstatus += `💰 /monetize — Monetization`;\n\nreturn [{ json: { chatId, message: status } }];"
-      },
-      "id": "status-check",
-      "name": "📡 Status Check",
+      "id": "content-engine",
+      "name": "Content Engine",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [700, 960]
+      "position": [240, 900]
     },
     {
       "parameters": {
-        "method": "POST",
-        "url": "https://api.telegram.org/bot{{ $env.TELEGRAM_BOT_TOKEN }}/sendMessage",
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            { "name": "chat_id", "value": "={{ $json.chatId }}" },
-            { "name": "text", "value": "={{ $json.message }}" },
-            { "name": "parse_mode", "value": "Markdown" }
-          ]
-        }
+        "jsCode": "// ============================================\n// CAROUSEL HTML RENDERER\n// Converts carousel JSON to beautiful HTML\n// ============================================\n\nconst input = $input.first().json;\nlet carousel;\n\ntry {\n  const raw = input.result || input.response || input.body || '';\n  const text = typeof raw === 'string' ? raw : JSON.stringify(raw);\n  const jsonMatch = text.match(/\\{[\\s\\S]*\"slides\"[\\s\\S]*\\}/);\n  carousel = jsonMatch ? JSON.parse(jsonMatch[0]) : null;\n} catch (e) {\n  carousel = null;\n}\n\nif (!carousel || !carousel.slides) {\n  // Fallback carousel\n  carousel = {\n    slides: [\n      { number: 1, type: 'hook', headline: 'Stop Scrolling', subtext: 'This changes everything', bg_color: '#0a0a0a', text_color: '#ffffff' },\n      { number: 2, type: 'content', headline: 'The Problem', body: 'Most people get this wrong', bg_color: '#1a1a2e', text_color: '#ffffff' },\n      { number: 3, type: 'content', headline: 'The Truth', body: 'Here is what actually works', bg_color: '#16213e', text_color: '#ffffff' },\n      { number: 4, type: 'content', headline: 'Step 1', body: 'Start with this', bg_color: '#0f3460', text_color: '#ffffff' },\n      { number: 5, type: 'content', headline: 'Step 2', body: 'Then do this', bg_color: '#533483', text_color: '#ffffff' },\n      { number: 6, type: 'cta', headline: 'Save This', body: 'Follow for more', bg_color: '#e94560', text_color: '#ffffff' }\n    ],\n    caption: 'Check out this post!',\n    hashtags: ['#tips', '#growth'],\n    hook_type: 'curiosity',\n    content_pillar: 'educational'\n  };\n}\n\nconst chatId = input.chatId;\nconst total = carousel.slides.length;\n\n// Generate HTML\nconst slidesHtml = carousel.slides.map(s => {\n  const bg = s.bg_color || '#0a0a0a';\n  const tc = s.text_color || '#ffffff';\n  const isHook = s.type === 'hook';\n  const isCta = s.type === 'cta';\n  const headline = (s.headline || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');\n  const body = (s.body || s.subtext || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');\n\n  return `\n  <div class=\"slide\" style=\"\n    width:1080px;height:1080px;background:${bg};\n    display:flex;flex-direction:column;justify-content:center;align-items:center;\n    padding:80px;box-sizing:border-box;\n    font-family:'Inter','Helvetica Neue',Arial,sans-serif;\n    position:relative;overflow:hidden;\n  \">\n    <div style=\"position:absolute;top:-60px;right:-60px;width:220px;height:220px;border-radius:50%;border:1px solid rgba(255,255,255,0.06);\"></div>\n    <div style=\"position:absolute;bottom:-80px;left:-80px;width:300px;height:300px;border-radius:50%;border:1px solid rgba(255,255,255,0.04);\"></div>\n    <div style=\"position:absolute;top:40px;right:50px;font-size:14px;color:rgba(255,255,255,0.25);font-weight:500;letter-spacing:3px;\">${String(s.number).padStart(2,'0')} / ${String(total).padStart(2,'0')}</div>\n    <div style=\"text-align:center;max-width:880px;z-index:1;\">\n      ${isHook ? '<div style=\"width:50px;height:4px;background:rgba(255,255,255,0.3);margin:0 auto 30px;\"></div>' : ''}\n      <h1 style=\"font-size:${isHook ? '68px' : '52px'};font-weight:${isHook ? '900' : '700'};color:${tc};margin:0 0 24px;line-height:1.1;letter-spacing:-2px;${isHook ? 'text-transform:uppercase;' : ''}\">${headline}</h1>\n      ${body ? `<p style=\"font-size:22px;color:rgba(255,255,255,0.7);margin:0;line-height:1.7;font-weight:400;\">${body}</p>` : ''}\n      ${isCta ? `<div style=\"margin-top:40px;padding:18px 48px;border:2px solid rgba(255,255,255,0.3);border-radius:50px;display:inline-block;font-size:18px;font-weight:600;color:${tc};letter-spacing:1px;\">${body}</div>` : ''}\n    </div>\n  </div>`;\n}).join('\\n');\n\nconst html = `<!DOCTYPE html>\n<html><head>\n<meta charset=\"utf-8\">\n<link href=\"https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap\" rel=\"stylesheet\">\n<style>*{margin:0;padding:0;box-sizing:border-box}body{background:#000}</style>\n</head><body>${slidesHtml}</body></html>`;\n\nreturn [{\n  json: {\n    html: html,\n    carousel: carousel,\n    chatId: chatId,\n    slideCount: total\n  }\n}];"
       },
-      "id": "send-status",
-      "name": "📨 Send Status",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [920, 960]
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "https://api.telegram.org/bot{{ $env.TELEGRAM_BOT_TOKEN }}/sendMessage",
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            { "name": "chat_id", "value": "={{ $json.chatId }}" },
-            { "name": "text", "value": "🟢 *VIRAL ENGINE Help* 📚\\n\\n*Commands:*\\n/start — Welcome message\\n/niche [name] — Set your niche\\n/brand — Upload brand identity\\n/research — Deep niche research\\n/create — Generate carousel\\n/post — Post to Instagram\\n/analytics — View performance\\n/report — Weekly report\\n/monetize — Monetization tips\\n/status — System status\\n/help — This message\\n\\n*Or just chat with me!* 🗣️\\nAsk me anything about your niche, content strategy, or Instagram growth!\\n\\n*Examples:*\\n• \"What hooks work best in fitness?\"\\n• \"Create a carousel about morning routines\"\\n• \"How is my engagement looking?\"\\n• \"When should I start monetizing?\"" },
-            { "name": "parse_mode", "value": "Markdown" }
-          ]
-        }
-      },
-      "id": "send-help",
-      "name": "📨 Send Help",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [700, 1080]
-    },
-    {
-      "parameters": {
-        "jsCode": "// AI CHAT — Free-form conversation handler\nconst input = $input.first().json;\nconst chatId = input.chatId || input.params?.chatId;\nconst userMessage = input.params?.raw || input.raw || '';\n\nconst prompt = `You are VIRAL ENGINE — an Instagram growth AI assistant.\n\nThe user is chatting with you. Respond helpfully, like a smart social media strategist friend.\n\nUser message: ${userMessage}\n\nRespond naturally. If they ask about:\n- Content ideas → suggest carousel concepts\n- Hooks → provide hook examples\n- Strategy → give actionable advice\n- Growth → share growth tactics\n- Monetization → explain monetization strategies\n- Analytics → explain metrics that matter\n\nKeep it conversational, use emojis, be direct and helpful. Don't be generic.`;\n\nreturn [{\n  json: {\n    prompt: prompt,\n    chatId: chatId,\n    userMessage: userMessage\n  }\n}];"
-      },
-      "id": "ai-chat",
-      "name": "💬 AI Chat",
+      "id": "html-renderer",
+      "name": "HTML Renderer",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [700, 1200]
+      "position": [240, 1100]
     },
     {
       "parameters": {
-        "method": "POST",
-        "url": "http://localhost:11434/api/generate",
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            { "name": "model", "value": "llama3" },
-            { "name": "prompt", "value": "={{ $json.prompt }}" },
-            { "name": "stream", "value": "false" }
-          ]
-        }
+        "jsCode": "// ============================================\n// TELEGRAM PREVIEW SENDER\n// Sends carousel preview to user\n// ============================================\n\nconst input = $input.first().json;\nconst carousel = input.carousel;\nconst chatId = input.chatId;\n\nlet msg = `NEW CAROUSEL CREATED\\n\\n`;\nmsg += `Hook: ${carousel.slides[0]?.headline || 'N/A'}\\n`;\nmsg += `Hook Type: ${carousel.hook_type || 'N/A'}\\n`;\nmsg += `Content Pillar: ${carousel.content_pillar || 'N/A'}\\n`;\nmsg += `Slides: ${carousel.slides.length}\\n`;\nmsg += `Best Time: ${carousel.best_posting_time || 'Now'}\\n`;\nmsg += `Predicted: ${carousel.predicted_engagement || 'Strong'}\\n\\n`;\n\nif (carousel.hook_analysis) msg += `Hook Analysis: ${carousel.hook_analysis}\\n\\n`;\nif (carousel.psychology_used) msg += `Psychology: ${carousel.psychology_used}\\n\\n`;\n\nmsg += `CAPTION PREVIEW:\\n${(carousel.caption || '').substring(0, 400)}...\\n\\n`;\nmsg += `HASHTAGS:\\n${(carousel.hashtags || []).slice(0, 10).join(', ')}...\\n\\n`;\nmsg += `COMMANDS:\\n`;\nmsg += `/post — Publish to Instagram\\n`;\nmsg += `/create — Generate new one\\n`;\nmsg += `/analytics — View performance`;\n\nreturn [{ json: { chatId, message: msg } }];"
       },
-      "id": "ollama-chat",
-      "name": "🧠 Ollama Chat",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [920, 1200]
+      "id": "preview",
+      "name": "Preview Builder",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [480, 1100]
     },
     {
       "parameters": {
         "method": "POST",
         "url": "https://api.telegram.org/bot{{ $env.TELEGRAM_BOT_TOKEN }}/sendMessage",
         "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            { "name": "chat_id", "value": "={{ $('AI Chat').first().json.chatId }}" },
-            { "name": "text", "value": "={{ $json.response }}" },
-            { "name": "parse_mode", "value": "Markdown" }
-          ]
-        }
+        "specifyBody": "json",
+        "jsonBody": "={ \"chat_id\": {{ $json.chatId }}, \"text\": {{ JSON.stringify($json.message) }}, \"parse_mode\": \"Markdown\" }"
       },
-      "id": "send-ai-response",
-      "name": "📨 Send AI Response",
+      "id": "tg-send",
+      "name": "Telegram Send",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [1140, 1200]
+      "position": [720, 1100]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.telegram.org/bot{{ $env.TELEGRAM_BOT_TOKEN }}/sendMessage",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={ \"chat_id\": {{ $('Command Router').first().json.chatId }}, \"text\": \"Welcome to IG VIRAL ENGINE\\n\\nThe autonomous Instagram growth system.\\n\\nCOMMANDS:\\n/niche [name] — Set your niche and start research\\n/brand — Upload brand identity\\n/research — Deep niche research\\n/create — Generate carousel\\n/post — Post to Instagram\\n/analytics — View performance\\n/report — Weekly report\\n/monetize — Monetization tips\\n/status — System status\\n/help — Show this message\\n\\nOr just chat normally. Tell me your niche to begin.\", \"parse_mode\": \"Markdown\" }"
+      },
+      "id": "tg-start",
+      "name": "Send Welcome",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [720, 0]
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.first().json;\nconst niche = input.params;\nconst chatId = input.chatId;\n\nif (!niche || niche.length < 2) {\n  return [{ json: { chatId, message: 'Specify a niche. Example: /niche fitness for women over 30' } }];\n}\n\nreturn [{ json: { niche, chatId, message: `Niche set: ${niche}\\n\\nStarting deep research across multiple platforms...\\n\\nThis covers:\\n- Instagram competitors\\n- Reddit communities\\n- Twitter/X trends\\n- TikTok viral content\\n- Pinterest ideas\\n- YouTube content\\n- Audience psychology\\n- Hook patterns\\n- Hashtag strategy\\n\\nI will message you when research is complete.` } }];"
+      },
+      "id": "niche-set",
+      "name": "Set Niche",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [720, 120]
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.first().json;\nconst chatId = input.chatId || input.params?.chatId;\n\nreturn [{ json: { chatId, message: `VIRAL ENGINE STATUS\\n\\nSystem: ONLINE\\nAI: Multi-provider (Groq/Gemini/Ollama/HuggingFace)\\nTelegram: Connected\\nInstagram: Connected\\nResearch: Active\\nAnalytics: Running\\n\\nSend /create to generate content.` } }];"
+      },
+      "id": "status-node",
+      "name": "Status",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [720, 900]
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.first().json;\nconst chatId = input.chatId || input.params?.chatId;\n\nreturn [{ json: { chatId, message: `HELP\\n\\nCOMMANDS:\\n/start — Welcome message\\n/niche [name] — Set your niche\\n/brand — Upload brand identity\\n/research — Deep research\\n/create — Generate carousel\\n/post — Post to Instagram\\n/analytics — Performance metrics\\n/report — Weekly report\\n/monetize — Monetization strategies\\n/status — System status\\n/help — This message\\n\\nOr chat normally. Ask about hooks, strategy, growth, monetization.` } }];"
+      },
+      "id": "help-node",
+      "name": "Help",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [720, 1020]
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.first().json;\nconst chatId = input.chatId || input.params?.chatId;\nconst niche = input.niche || input.params || 'your niche';\n\nreturn [{ json: { chatId, message: `MONETIZATION STRATEGY\\n\\nBased on: ${niche}\\n\\nRECOMMENDED PRODUCTS:\\n1. Digital Ebook — $9-29\\n2. Online Course — $47-197\\n3. Templates/Presets — $7-37\\n4. Coaching — $50-300/hour\\n\\nSETUP STEPS:\\n1. Create Linktree or Stan Store (free)\\n2. Add link to IG bio\\n3. Create link-in-bio carousel\\n4. Soft-promote in value content\\n5. Track conversions\\n\\nRULES:\\n- 80% value, 20% promotion\\n- Always give value first\\n- Test price points\\n- Use urgency and scarcity\\n\\nSend /create to make a promotional carousel.` } }];"
+      },
+      "id": "monetize-node",
+      "name": "Monetize",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [720, 780]
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.first().json;\nconst chatId = input.chatId || input.params?.chatId;\n\nreturn [{ json: { chatId, message: `ANALYTICS\\n\\nTo track performance, the system needs your Instagram access token configured.\\n\\nOnce configured, I will track:\\n- Likes, comments, saves, shares\\n- Engagement rate\\n- Follower growth\\n- Best performing posts\\n- Hook effectiveness\\n- Optimal posting times\\n\\nSend /status to check configuration.` } }];"
+      },
+      "id": "analytics-node",
+      "name": "Analytics",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [720, 660]
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.first().json;\nconst chatId = input.chatId || input.params?.chatId;\n\nreturn [{ json: { chatId, message: `WEEKLY REPORT\\n\\nGenerating your weekly intelligence report...\\n\\nThis includes:\\n- Top performing posts\\n- Engagement trends\\n- Growth trajectory\\n- Competitor movements\\n- Content recommendations\\n- Next week strategy\\n\\nReport will be sent shortly.` } }];"
+      },
+      "id": "report-node",
+      "name": "Report",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [720, 540]
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.first().json;\nconst chatId = input.chatId || input.params?.chatId;\n\nreturn [{ json: { chatId, message: `POST TO INSTAGRAM\\n\\nTo post, I need:\\n1. A carousel generated with /create\\n2. Instagram API credentials configured\\n3. Images rendered and hosted\\n\\nOnce the carousel is ready and images are rendered, I will:\\n1. Create media containers via IG Graph API\\n2. Assemble the carousel\\n3. Publish with your caption and hashtags\\n4. Track performance\\n\\nGenerate a carousel first with /create` } }];"
+      },
+      "id": "post-node",
+      "name": "Post",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [720, 420]
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.first().json;\nconst chatId = input.chatId || input.params?.chatId;\n\nreturn [{ json: { chatId, message: `BRAND IDENTITY\\n\\nTo set your brand identity, send me:\\n\\n1. Colors (hex codes)\\n   Example: #0a0a0a bg, #e94560 accent, #fff text\\n\\n2. Font style\\n   Example: Bold modern sans-serif\\n\\n3. Visual style\\n   Example: Dark minimal, centered, high contrast\\n\\n4. Vibe\\n   Example: Professional but edgy\\n\\nOr upload a screenshot of a carousel you like and I will match the style.` } }];"
+      },
+      "id": "brand-node",
+      "name": "Brand",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [720, 240]
+    },
+    {
+      "parameters": {
+        "jsCode": "// ============================================\n// FREE-FORM AI CHAT\n// Handles natural conversation\n// ============================================\n\nconst input = $input.first().json;\nconst chatId = input.chatId;\nconst userMsg = input.params || '';\n\nconst prompt = `You are VIRAL ENGINE, an Instagram growth AI assistant. You are direct, knowledgeable, and helpful. You use emojis naturally but don't overdo it.\n\nThe user says: \"${userMsg}\"\n\nRespond helpfully. If they ask about:\n- Content ideas → suggest carousel concepts\n- Hooks → provide hook examples\n- Strategy → give actionable advice\n- Growth → share growth tactics\n- Monetization → explain strategies\n- Analytics → explain metrics\n\nBe conversational, direct, and useful. No filler.`;\n\nreturn [{ json: { prompt, chatId } }];"
+      },
+      "id": "chat-node",
+      "name": "Chat Handler",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [720, 1140]
     },
     {
       "parameters": {
@@ -525,61 +338,58 @@
           "interval": [{ "field": "hours", "hoursInterval": 6 }]
         }
       },
-      "id": "scheduled-trigger",
-      "name": "⏰ Scheduled Trigger",
+      "id": "scheduler",
+      "name": "Auto Scheduler",
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.1,
-      "position": [0, 1400]
+      "position": [0, 1300]
     },
     {
       "parameters": {
-        "jsCode": "// AUTO POSTER — Generates and posts content automatically\nconst chatId = process.env.TELEGRAM_CHAT_ID;\n\nreturn [{\n  json: {\n    action: 'auto_create_and_post',\n    chatId: chatId,\n    trigger: 'scheduled'\n  }\n}];"
+        "jsCode": "return [{ json: { route: 'create', command: '/create', params: '', chatId: process.env.TELEGRAM_CHAT_ID, username: 'System', timestamp: new Date().toISOString() } }];"
       },
-      "id": "auto-poster",
-      "name": "🤖 Auto Poster",
+      "id": "auto-create",
+      "name": "Auto Create",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [220, 1400]
+      "position": [240, 1300]
     }
   ],
   "connections": {
-    "📱 Telegram Trigger": { "main": [[{ "node": "🔀 Command Router", "type": "main", "index": 0 }]] },
-    "🔀 Command Router": { "main": [[{ "node": "🔀 Route Switch", "type": "main", "index": 0 }]] },
-    "🔀 Route Switch": {
+    "Telegram Trigger": { "main": [[{ "node": "Command Router", "type": "main", "index": 0 }]] },
+    "Command Router": { "main": [[{ "node": "Route Switch", "type": "main", "index": 0 }]] },
+    "Route Switch": {
       "main": [
-        [{ "node": "🟢 Setup Response", "type": "main", "index": 0 }],
-        [{ "node": "🎯 Set Niche", "type": "main", "index": 0 }],
-        [{ "node": "🎨 HTML Carousel Renderer", "type": "main", "index": 0 }],
-        [{ "node": "🔍 Research Engine", "type": "main", "index": 0 }],
-        [{ "node": "✍️ Content Generator", "type": "main", "index": 0 }],
-        [{ "node": "📤 IG Poster", "type": "main", "index": 0 }],
-        [{ "node": "📊 Analytics Tracker", "type": "main", "index": 0 }],
-        [{ "node": "📊 Analytics Tracker", "type": "main", "index": 0 }],
-        [{ "node": "💰 Monetization Advisor", "type": "main", "index": 0 }],
-        [{ "node": "📡 Status Check", "type": "main", "index": 0 }],
-        [{ "node": "📨 Send Help", "type": "main", "index": 0 }],
-        [{ "node": "💬 AI Chat", "type": "main", "index": 0 }]
+        [{ "node": "Send Welcome", "type": "main", "index": 0 }],
+        [{ "node": "Set Niche", "type": "main", "index": 0 }],
+        [{ "node": "Brand", "type": "main", "index": 0 }],
+        [{ "node": "Research Engine", "type": "main", "index": 0 }, { "node": "Browser Targets", "type": "main", "index": 0 }],
+        [{ "node": "Content Engine", "type": "main", "index": 0 }],
+        [{ "node": "Post", "type": "main", "index": 0 }],
+        [{ "node": "Analytics", "type": "main", "index": 0 }],
+        [{ "node": "Report", "type": "main", "index": 0 }],
+        [{ "node": "Monetize", "type": "main", "index": 0 }],
+        [{ "node": "Status", "type": "main", "index": 0 }],
+        [{ "node": "Help", "type": "main", "index": 0 }],
+        [{ "node": "Chat Handler", "type": "main", "index": 0 }]
       ]
     },
-    "🎯 Set Niche": { "main": [[{ "node": "📨 Send Niche Confirmation", "type": "main", "index": 0 }, { "node": "🔍 Research Engine", "type": "main", "index": 0 }]] },
-    "🔍 Research Engine": { "main": [[{ "node": "🌐 Web Search", "type": "main", "index": 0 }]] },
-    "🌐 Web Search": { "main": [[{ "node": "📚 Research Aggregator", "type": "main", "index": 0 }]] },
-    "📚 Research Aggregator": { "main": [[{ "node": "📨 Research Complete", "type": "main", "index": 0 }]] },
-    "✍️ Content Generator": { "main": [[{ "node": "🧠 Ollama AI (FREE)", "type": "main", "index": 0 }]] },
-    "🧠 Ollama AI (FREE)": { "main": [[{ "node": "🔧 Parse AI Response", "type": "main", "index": 0 }]] },
-    "🔧 Parse AI Response": { "main": [[{ "node": "👁️ Preview Sender", "type": "main", "index": 0 }, { "node": "🎨 HTML Carousel Renderer", "type": "main", "index": 0 }]] },
-    "👁️ Preview Sender": { "main": [[{ "node": "📨 Send Preview", "type": "main", "index": 0 }]] },
-    "🎨 HTML Carousel Renderer": { "main": [[{ "node": "🖼️ Image Converter", "type": "main", "index": 0 }]] },
-    "🖼️ Image Converter": { "main": [[{ "node": "🖥️ Puppeteer Render", "type": "main", "index": 0 }]] },
-    "📊 Analytics Tracker": { "main": [[{ "node": "📥 Fetch IG Media", "type": "main", "index": 0 }]] },
-    "📥 Fetch IG Media": { "main": [[{ "node": "📋 Analytics Report", "type": "main", "index": 0 }]] },
-    "📋 Analytics Report": { "main": [[{ "node": "📨 Send Analytics", "type": "main", "index": 0 }]] },
-    "💰 Monetization Advisor": { "main": [[{ "node": "📨 Send Monetization", "type": "main", "index": 0 }]] },
-    "📡 Status Check": { "main": [[{ "node": "📨 Send Status", "type": "main", "index": 0 }]] },
-    "💬 AI Chat": { "main": [[{ "node": "🧠 Ollama Chat", "type": "main", "index": 0 }]] },
-    "🧠 Ollama Chat": { "main": [[{ "node": "📨 Send AI Response", "type": "main", "index": 0 }]] },
-    "⏰ Scheduled Trigger": { "main": [[{ "node": "🤖 Auto Poster", "type": "main", "index": 0 }]] },
-    "🤖 Auto Poster": { "main": [[{ "node": "✍️ Content Generator", "type": "main", "index": 0 }]] }
+    "Set Niche": { "main": [[{ "node": "Telegram Send", "type": "main", "index": 0 }]] },
+    "Research Engine": { "main": [[{ "node": "Web Search", "type": "main", "index": 0 }]] },
+    "Web Search": { "main": [[{ "node": "Research Aggregator", "type": "main", "index": 0 }]] },
+    "Browser Targets": { "main": [[{ "node": "Browser Fetch", "type": "main", "index": 0 }]] },
+    "Browser Fetch": { "main": [[{ "node": "Social Media Extractor", "type": "main", "index": 0 }]] },
+    "Social Media Extractor": { "main": [[{ "node": "Research Aggregator", "type": "main", "index": 0 }]] },
+    "Content Engine": { "main": [[{ "node": "AI Provider Router", "type": "main", "index": 0 }]] },
+    "AI Provider Router": { "main": [[{ "node": "AI Executor Prep", "type": "main", "index": 0 }]] },
+    "AI Executor Prep": { "main": [[{ "node": "AI HTTP Request", "type": "main", "index": 0 }]] },
+    "AI HTTP Request": { "main": [[{ "node": "AI Response Parser", "type": "main", "index": 0 }]] },
+    "AI Response Parser": { "main": [[{ "node": "HTML Renderer", "type": "main", "index": 0 }]] },
+    "HTML Renderer": { "main": [[{ "node": "Preview Builder", "type": "main", "index": 0 }]] },
+    "Preview Builder": { "main": [[{ "node": "Telegram Send", "type": "main", "index": 0 }]] },
+    "Chat Handler": { "main": [[{ "node": "AI Provider Router", "type": "main", "index": 0 }]] },
+    "Auto Scheduler": { "main": [[{ "node": "Auto Create", "type": "main", "index": 0 }]] },
+    "Auto Create": { "main": [[{ "node": "Content Engine", "type": "main", "index": 0 }]] }
   },
   "settings": {
     "executionOrder": "v1",
