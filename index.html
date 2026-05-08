@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🟢 IG Viral Engine — The Autonomous Instagram Growth Machine</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+        
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(233, 69, 96, 0.1) 0%, transparent 50%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .emoji {
+            font-size: 80px;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #e94560, #ff6b6b, #e94560);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .tagline {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 40px;
+            max-width: 600px;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .btn {
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .btn-primary {
+            background: #e94560;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #ff6b6b;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(233, 69, 96, 0.4);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .btn-secondary:hover {
+            border-color: #e94560;
+            color: #e94560;
+            transform: translateY(-3px);
+        }
+        
+        .features {
+            padding: 100px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .features h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 60px;
+            color: #e94560;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: #e94560;
+            box-shadow: 0 20px 40px rgba(233, 69, 96, 0.2);
+        }
+        
+        .feature-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #ffffff;
+        }
+        
+        .feature-card p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+        }
+        
+        .cost-section {
+            padding: 100px 20px;
+            text-align: center;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        }
+        
+        .cost-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+        }
+        
+        .cost-badge {
+            display: inline-block;
+            font-size: 6rem;
+            font-weight: 900;
+            color: #00ff88;
+            margin-bottom: 30px;
+            text-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
+        }
+        
+        .cost-list {
+            list-style: none;
+            max-width: 500px;
+            margin: 0 auto;
+            text-align: left;
+        }
+        
+        .cost-list li {
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.1rem;
+        }
+        
+        .cost-list li span:last-child {
+            color: #00ff88;
+            font-weight: 600;
+        }
+        
+        .deploy-section {
+            padding: 100px 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .deploy-section h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 60px;
+        }
+        
+        .deploy-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .deploy-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .deploy-card:hover {
+            transform: translateY(-5px);
+            border-color: #e94560;
+        }
+        
+        .deploy-card h3 {
+            margin-bottom: 10px;
+            color: #e94560;
+        }
+        
+        .deploy-card p {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 20px;
+        }
+        
+        .deploy-btn {
+            display: inline-block;
+            padding: 10px 25px;
+            background: #e94560;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .deploy-btn:hover {
+            background: #ff6b6b;
+            transform: scale(1.05);
+        }
+        
+        .commands-section {
+            padding: 100px 20px;
+            background: linear-gradient(135deg, #16213e 0%, #0f3460 100%);
+        }
+        
+        .commands-section h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 60px;
+        }
+        
+        .commands-grid {
+            max-width: 800px;
+            margin: 0 auto;
+            display: grid;
+            gap: 15px;
+        }
+        
+        .command {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 20px 25px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .command-name {
+            color: #e94560;
+            font-weight: 700;
+            min-width: 120px;
+        }
+        
+        .command-desc {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .footer {
+            padding: 50px 20px;
+            text-align: center;
+            background: #000;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer p {
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 20px;
+        }
+        
+        .footer .mantra {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #e94560;
+            margin-bottom: 30px;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        .social-links a {
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            color: #e94560;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .tagline {
+                font-size: 1.2rem;
+            }
+            
+            .cost-badge {
+                font-size: 4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="hero">
+        <div class="hero-content">
+            <div class="emoji">🟢</div>
+            <h1>IG VIRAL ENGINE</h1>
+            <p class="tagline">The Autonomous Instagram Growth Machine<br>GET VIRAL OR DIE TRYING 💀🔥</p>
+            <div class="cta-buttons">
+                <a href="https://github.com/Atum246/ig-viral-engine" class="btn btn-primary">
+                    ⭐ Star on GitHub
+                </a>
+                <a href="#features" class="btn btn-secondary">
+                    🚀 Learn More
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <section class="features" id="features">
+        <h2>🧠 What It Does</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🔍</div>
+                <h3>Deep Niche Research</h3>
+                <p>Studies your niche across hundreds of sources. Learns audience psychology, hooks, trends, and competitors like a PhD student.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎨</div>
+                <h3>Beautiful Carousels</h3>
+                <p>Creates stunning carousels using HTML/CSS/JS. Not generic AI garbage — professional, on-brand, scroll-stopping content.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📤</div>
+                <h3>Auto-Posting</h3>
+                <p>Publishes to Instagram at optimal times. Tests different posting schedules to find what works best for YOUR audience.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>A/B Testing</h3>
+                <p>Tests hooks, formats, captions, and posting times. Every post is an experiment. Every experiment makes the next one better.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💰</div>
+                <h3>Monetization Alerts</h3>
+                <p>When you're ready to monetize, it tells you. Suggests products, pricing, and strategies based on your niche and audience.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💬</div>
+                <h3>Telegram Chat</h3>
+                <p>Chat with your AI assistant on Telegram. Get status updates, analytics, and control everything with simple commands.</p>
+            </div>
+        </div>
+    </section>
+    
+    <section class="cost-section">
+        <h2>💰 Total Cost</h2>
+        <div class="cost-badge">$0</div>
+        <ul class="cost-list">
+            <li><span>🧠 AI Brain (Ollama)</span><span>FREE</span></li>
+            <li><span>⚙️ Automation (n8n)</span><span>FREE</span></li>
+            <li><span>📱 Chat (Telegram)</span><span>FREE</span></li>
+            <li><span>📸 Posting (IG API)</span><span>FREE</span></li>
+            <li><span>🖼️ Rendering (Puppeteer)</span><span>FREE</span></li>
+            <li><span>🖥️ Hosting (Cloud)</span><span>FREE</span></li>
+            <li><span><strong>TOTAL</strong></span><span><strong>$0</strong></span></li>
+        </ul>
+    </section>
+    
+    <section class="deploy-section">
+        <h2>☁️ Deploy in 3 Clicks</h2>
+        <div class="deploy-options">
+            <div class="deploy-card">
+                <h3>Render.com</h3>
+                <p>Easiest setup. 750 free hours/month.</p>
+                <a href="https://render.com" class="deploy-btn">Deploy Now</a>
+            </div>
+            <div class="deploy-card">
+                <h3>Railway.app</h3>
+                <p>Fast performance. $5 free credit/month.</p>
+                <a href="https://railway.app" class="deploy-btn">Deploy Now</a>
+            </div>
+            <div class="deploy-card">
+                <h3>Fly.io</h3>
+                <p>Most powerful. 3 free VMs.</p>
+                <a href="https://fly.io" class="deploy-btn">Deploy Now</a>
+            </div>
+            <div class="deploy-card">
+                <h3>Oracle Cloud</h3>
+                <p>Always free. 4 cores, 24GB RAM.</p>
+                <a href="https://cloud.oracle.com/free" class="deploy-btn">Deploy Now</a>
+            </div>
+        </div>
+    </section>
+    
+    <section class="commands-section">
+        <h2>🤖 Telegram Commands</h2>
+        <div class="commands-grid">
+            <div class="command">
+                <span class="command-name">/start</span>
+                <span class="command-desc">Welcome & setup</span>
+            </div>
+            <div class="command">
+                <span class="command-name">/niche</span>
+                <span class="command-desc">Set your niche & start research</span>
+            </div>
+            <div class="command">
+                <span class="command-name">/create</span>
+                <span class="command-desc">Generate carousel</span>
+            </div>
+            <div class="command">
+                <span class="command-name">/post</span>
+                <span class="command-desc">Post to Instagram</span>
+            </div>
+            <div class="command">
+                <span class="command-name">/analytics</span>
+                <span class="command-desc">View performance</span>
+            </div>
+            <div class="command">
+                <span class="command-name">/monetize</span>
+                <span class="command-desc">Monetization strategies</span>
+            </div>
+            <div class="command">
+                <span class="command-name">/status</span>
+                <span class="command-desc">System status</span>
+            </div>
+            <div class="command">
+                <span class="command-name">/help</span>
+                <span class="command-desc">Show all commands</span>
+            </div>
+        </div>
+    </section>
+    
+    <footer class="footer">
+        <p class="mantra">GET VIRAL OR DIE TRYING 💀🔥</p>
+        <p>Built with 🟢 by the Viral Engine Team</p>
+        <div class="social-links">
+            <a href="https://github.com/Atum246/ig-viral-engine">GitHub</a>
+            <a href="https://github.com/Atum246/ig-viral-engine/blob/main/docs/SETUP-GUIDE.md">Docs</a>
+            <a href="https://github.com/Atum246/ig-viral-engine/blob/main/docs/CLOUD-DEPLOYMENT.md">Deploy</a>
+        </div>
+    </footer>
+</body>
+</html>
