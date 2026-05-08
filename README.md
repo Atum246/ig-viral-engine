@@ -1,256 +1,262 @@
-# 🟢 IG VIRAL ENGINE
+# IG Viral Engine
 
-## The Autonomous Instagram Growth Machine
-### GET VIRAL OR DIE TRYING 💀🔥
+### Autonomous Instagram Growth System
 
----
+Researches your niche, creates professional carousels, posts to Instagram, tests everything, and gets smarter every cycle.
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Cost-$0-green?style=for-the-badge" alt="Cost: $0">
-  <img src="https://img.shields.io/badge/AI-Ollama-blue?style=for-the-badge" alt="AI: Ollama">
-  <img src="https://img.shields.io/badge/Automation-n8n-orange?style=for-the-badge" alt="Automation: n8n">
-  <img src="https://img.shields.io/badge/Platform-Instagram-purple?style=for-the-badge" alt="Platform: Instagram">
-</p>
+**$0 cost. No subscriptions. No paid APIs.**
 
 ---
 
-## 🎯 What Is This?
+## What It Does
 
-An **autonomous Instagram growth system** that:
-- 🔍 **Researches** your niche across hundreds of sources
-- 🧠 **Learns** audience psychology, hooks, trends, and competitors
-- 🎨 **Creates** beautiful carousels (not generic AI garbage)
-- 📤 **Posts** to Instagram at optimal times
-- 📊 **Tracks** engagement, saves, shares, and growth
-- 🧪 **A/B tests** hooks, formats, posting times
-- 💰 **Alerts you** when it's time to monetize
-- 💬 **Chats with you** on Telegram
-- 🔄 **Gets smarter** with every single post
-
-**All for $0. No subscriptions. No paid APIs. Just execute.**
+- **Deep Niche Research** — Studies your niche across hundreds of sources. Learns audience psychology, viral hooks, competitor strategies, and trending topics.
+- **Carousel Generation** — Creates professional carousels using HTML, CSS, and JavaScript. Matches your brand identity exactly.
+- **Auto-Posting** — Publishes to Instagram at optimal times via the Instagram Graph API.
+- **A/B Testing** — Tests hooks, formats, captions, and posting times. Every post improves the next.
+- **Analytics Tracking** — Monitors likes, comments, saves, shares, and follower growth.
+- **Monetization Alerts** — Suggests products, pricing, and strategies when your account is ready.
+- **Telegram Interface** — Control everything from Telegram. Commands or natural conversation.
 
 ---
 
-## 🚀 Quick Start (3 Steps)
+## Getting Started
 
-### Step 1: Deploy to Cloud (Choose One)
+### Step 1: Create a Telegram Bot
 
-| Platform | Free Tier | Difficulty | Deploy |
-|----------|-----------|------------|--------|
-| **Render.com** ⭐ | 750 hrs/month | Easiest | [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com) |
-| **Railway.app** | $5 credit/month | Easy | [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app) |
-| **Fly.io** | 3 VMs free | Medium | `fly launch` |
-| **Oracle Cloud** | Always free (4 cores, 24GB RAM) | Medium | [Sign Up](https://cloud.oracle.com/free) |
-| **Google Cloud Run** | 2M requests/month | Medium | [Deploy](https://cloud.google.com/run) |
+Open Telegram, search for `@BotFather`, send `/newbot`, and follow the prompts. Copy the bot token it gives you.
 
-### Step 2: Set Environment Variables
+### Step 2: Get Your Chat ID
 
-```env
-TELEGRAM_BOT_TOKEN=your_token_from_botfather
+Send any message to your new bot. Then open this URL in your browser:
+
+```
+https://api.telegram.org/botYOUR_TOKEN/getUpdates
+```
+
+Find `"chat":{"id": 123456789}` in the response. That number is your chat ID.
+
+### Step 3: Switch Instagram to Business Account
+
+In Instagram: Settings > Account > Switch to Professional Account. Choose Business or Creator. Connect it to a Facebook Page (create one if needed). This is free and required for the API.
+
+### Step 4: Create a Facebook Developer App
+
+1. Go to [developers.facebook.com](https://developers.facebook.com)
+2. Create a new app (Business type)
+3. Add the "Instagram Graph API" product
+4. Go to Graph API Explorer
+5. Generate a token with these permissions:
+   - `instagram_basic`
+   - `instagram_content_publish`
+   - `pages_show_list`
+   - `pages_read_engagement`
+
+### Step 5: Get Your Instagram User ID
+
+In Graph API Explorer:
+
+1. Run `me/accounts` to find your Page ID
+2. Run `PAGE_ID?fields=instagram_business_account`
+3. The ID returned is your Instagram User ID
+
+### Step 6: Deploy to a Free Cloud Platform
+
+Choose one:
+
+| Platform | Free Tier | Difficulty |
+|----------|-----------|------------|
+| [Render.com](https://render.com) | 750 hrs/month | Easiest |
+| [Railway.app](https://railway.app) | $5 credit/month | Easy |
+| [Fly.io](https://fly.io) | 3 VMs free | Medium |
+| [Oracle Cloud](https://cloud.oracle.com/free) | Always free, 4 cores, 24GB RAM | Medium |
+| [Google Cloud Run](https://cloud.google.com/run) | 2M requests/month | Medium |
+
+Connect your GitHub repo and set these environment variables:
+
+```
+TELEGRAM_BOT_TOKEN=your_bot_token
 TELEGRAM_CHAT_ID=your_chat_id
 IG_USER_ID=your_ig_user_id
 IG_ACCESS_TOKEN=your_ig_access_token
 ```
 
-### Step 3: Start Creating!
+### Step 7: Import the Workflow into n8n
 
-1. Message your Telegram bot: `/start`
-2. Set your niche: `/niche fitness for women`
-3. Create content: `/create`
-4. Post to Instagram: `/post`
+1. Open your n8n instance
+2. Click "Add Workflow" then "Import from File"
+3. Upload `workflows/IG-VIRAL-ENGINE.json`
+4. Configure the Telegram credential with your bot token
+5. Activate the workflow (toggle in top right)
+
+### Step 8: Install Ollama (Free AI)
+
+On your server:
+
+```bash
+curl -fsSL https://ollama.ai/install.sh | sh
+ollama pull llama3
+```
+
+This is your free AI brain. No API keys. No subscriptions.
+
+### Step 9: Send Your First Command
+
+Open Telegram and message your bot:
+
+```
+/start
+```
+
+You should get a welcome reply. Then:
+
+```
+/niche fitness for women over 30
+```
+
+The system starts researching your niche immediately.
+
+### Step 10: Create and Post
+
+```
+/create
+```
+
+Generates a carousel preview. Review it. Then:
+
+```
+/post
+```
+
+Publishes it to Instagram. The system tracks performance and improves from there.
 
 ---
 
-## 📁 Project Structure
+## Telegram Commands
+
+| Command | Description |
+|---------|-------------|
+| `/start` | Welcome message and setup guide |
+| `/niche` | Set your niche and begin deep research |
+| `/brand` | Upload brand identity (colors, fonts, style) |
+| `/research` | Trigger niche research manually |
+| `/create` | Generate a new carousel post |
+| `/post` | Publish the latest carousel to Instagram |
+| `/analytics` | View performance metrics |
+| `/report` | Full weekly intelligence report |
+| `/monetize` | Monetization strategies and advice |
+| `/status` | Check system status |
+| `/help` | List all available commands |
+
+You can also chat naturally. Ask questions, request content ideas, or get strategy advice.
+
+---
+
+## Project Structure
 
 ```
-ig-automation/
-├── 📄 README.md                      ← You are here
-├── 🐳 Dockerfile                     ← Docker container config
-├── 🚀 quick-start.sh                 ← One-click server setup
-├── 📦 package.json                   ← Node.js dependencies
-├── 🔒 .gitignore                     ← Protects sensitive files
-├── 🔐 .env.example                   ← Environment variable template
+ig-viral-engine/
+├── Dockerfile                     Docker container config
+├── README.md                      This file
+├── index.html                     GitHub Pages landing page
+├── package.json                   Node.js dependencies
+├── quick-start.sh                 One-click server setup
+├── .env.example                   Environment variable template
+├── .gitignore                     Protects sensitive files
+├── render.yaml                    Render.com config
+├── railway.json                   Railway config
+├── fly.toml                       Fly.io config
 │
-├── 📂 prompts/
-│   └── 🧠 MASTER-SYSTEM-PROMPT.md    ← The AI brain (12KB of pure power)
+├── prompts/
+│   └── MASTER-SYSTEM-PROMPT.md    The AI brain
 │
-├── 📂 workflows/
-│   └── ⚙️ IG-VIRAL-ENGINE.json       ← n8n workflow (42KB, 30+ nodes)
+├── workflows/
+│   └── IG-VIRAL-ENGINE.json       n8n workflow (30+ nodes)
 │
-├── 📂 templates/
-│   ├── 🎨 carousel-templates.html    ← Beautiful carousel HTML templates
-│   ├── 🎨 brand-identity-template.md ← Brand identity configuration
-│   └── 🖼️ render-carousel.js         ← HTML-to-PNG renderer (Puppeteer)
+├── templates/
+│   ├── carousel-templates.html    Carousel HTML templates
+│   ├── brand-identity-template.md Brand config template
+│   └── render-carousel.js         HTML-to-PNG renderer
 │
-└── 📂 docs/
-    ├── 📖 SETUP-GUIDE.md             ← Complete setup instructions
-    ├── 🆓 FREE-TOOLS-REFERENCE.md   ← Every free tool you need
-    └── ☁️ CLOUD-DEPLOYMENT.md        ← Deploy to free cloud platforms
+└── docs/
+    ├── SETUP-GUIDE.md             Complete setup walkthrough
+    ├── FREE-TOOLS-REFERENCE.md    Every free tool explained
+    └── CLOUD-DEPLOYMENT.md        Deploy to free cloud platforms
 ```
 
 ---
 
-## 💰 Total Cost: $0
+## Tech Stack
 
 | Component | Tool | Cost |
 |-----------|------|------|
-| 🧠 AI Brain | Ollama + llama3 | FREE |
-| ⚙️ Automation | n8n (self-hosted) | FREE |
-| 📱 Chat | Telegram Bot | FREE |
-| 📸 Posting | Instagram Graph API | FREE |
-| 🖼️ Rendering | Puppeteer | FREE |
-| 🌐 Research | DuckDuckGo + Reddit | FREE |
-| 🖥️ Hosting | Render/Railway/Oracle | FREE |
-| **TOTAL** | | **$0** |
+| AI Brain | Ollama + llama3 | Free |
+| Automation | n8n (self-hosted) | Free |
+| Chat | Telegram Bot API | Free |
+| IG Posting | Instagram Graph API | Free |
+| Rendering | Puppeteer | Free |
+| Research | HTTP requests + web scraping | Free |
+| Hosting | Render / Railway / Oracle | Free |
 
 ---
 
-## 🤖 Telegram Commands
-
-| Command | What it does |
-|---------|--------------|
-| `/start` | Welcome & setup |
-| `/niche [name]` | Set your niche & start research |
-| `/brand` | Upload brand identity |
-| `/research` | Deep niche research |
-| `/create` | Generate carousel |
-| `/post` | Post to Instagram |
-| `/analytics` | View performance |
-| `/report` | Weekly intelligence report |
-| `/monetize` | Monetization strategies |
-| `/status` | System status |
-| `/help` | Show all commands |
-
-Or just **chat normally** — ask questions, get advice, request content ideas!
-
----
-
-## 🧠 How It Works
+## How the System Thinks
 
 ```
-You set niche → AI researches deeply → Creates carousels → Posts to IG → Analyzes → Optimizes → Repeats
-     ↑                                                                              ↓
-     └──────────────────── Gets smarter every cycle ────────────────────────────────┘
+Set niche
+    |
+    v
+Research (hundreds of sources)
+    |
+    v
+Build knowledge base (hooks, psychology, trends, competitors)
+    |
+    v
+Create carousel (HTML/CSS/JS, brand-matched)
+    |
+    v
+Post to Instagram (optimal time)
+    |
+    v
+Track performance (saves, shares, engagement)
+    |
+    v
+Analyze what worked and what didn't
+    |
+    v
+A/B test new hooks, formats, times
+    |
+    v
+Update knowledge base
+    |
+    v
+Create better carousel
+    |
+    (repeat forever)
 ```
 
-### The Loop:
-1. **Research** 🔍 — Studies your niche across hundreds of sources
-2. **Create** ✍️ — Generates beautiful, on-brand carousels
-3. **Post** 📤 — Publishes to Instagram at optimal times
-4. **Analyze** 📊 — Tracks engagement, saves, shares, growth
-5. **Optimize** 🔄 — A/B tests hooks, times, formats
-6. **Repeat** ♻️ — Every cycle makes the next one better
+Every cycle makes the next post better. The system never stops learning.
 
 ---
 
-## 🎨 Brand Identity
+## Documentation
 
-Upload a sample carousel or describe your style:
-```
-/brand
-Colors: #0a0a0a, #e94560, #ffffff
-Font: Inter bold, 64px headlines
-Style: Dark minimal, centered
-Vibe: Professional edgy
-```
-
-The AI will match this style on EVERY carousel. Consistent. Professional. Yours.
+- [Setup Guide](docs/SETUP-GUIDE.md) — Complete walkthrough from zero to posting
+- [Cloud Deployment](docs/CLOUD-DEPLOYMENT.md) — Deploy to free cloud platforms
+- [Free Tools Reference](docs/FREE-TOOLS-REFERENCE.md) — Every free tool and API used
+- [Master System Prompt](prompts/MASTER-SYSTEM-PROMPT.md) — The AI brain
 
 ---
 
-## 📊 What Gets Tracked
+## License
 
-- ❤️ Likes, 💬 Comments, 📌 Saves, 🔄 Shares
-- 📈 Follower growth rate
-- 🎯 Engagement rate per post
-- 🎣 Hook performance (which hooks stop the scroll)
-- ⏰ Best posting times (learned from YOUR audience)
-- 🏷️ Hashtag effectiveness
-- 📱 Content pillar balance
+MIT License. Use it, modify it, deploy it. Just give credit.
 
 ---
 
-## 💰 Monetization Features
+## Links
 
-When your account is ready, the system:
-- 💡 Suggests products to sell (ebooks, courses, templates)
-- 💲 Recommends pricing based on niche benchmarks
-- 🔗 Guides you to set up Linktree/Stan Store
-- 📢 Creates promotional carousels
-- 📊 Tracks conversion metrics
-- 🎯 Adapts content to what you're promoting
-
----
-
-## 🛠️ Tech Stack
-
-- **n8n** — Workflow automation engine
-- **Ollama** — Local AI (llama3, free, no API costs)
-- **Telegram Bot API** — Chat interface
-- **Instagram Graph API** — Content publishing
-- **Puppeteer** — HTML to image rendering
-- **HTML/CSS/JS** — Carousel design
-- **Docker** — Containerization
-
----
-
-## 📖 Documentation
-
-- **[Setup Guide](docs/SETUP-GUIDE.md)** — Complete setup walkthrough
-- **[Free Tools Reference](docs/FREE-TOOLS-REFERENCE.md)** — Every free tool explained
-- **[Cloud Deployment](docs/CLOUD-DEPLOYMENT.md)** — Deploy to free cloud platforms
-- **[Master System Prompt](prompts/MASTER-SYSTEM-PROMPT.md)** — The AI brain
-
----
-
-## 🚨 Security
-
-- **Never commit `.env` files** — They contain your API keys
-- **Use strong passwords** — Change default n8n password
-- **Rotate tokens** — Refresh Instagram access tokens regularly
-- **Monitor access** — Check n8n execution logs
-
----
-
-## 🔥 The Mentality
-
-> "Research until I know everything. Create until it's perfect. 
-> Test until the data screams. Adapt until I'm unstoppable. 
-> **GET VIRAL OR DIE TRYING.**" 💀🔥
-
----
-
-## 📈 Expected Timeline
-
-| Week | Expected Results |
-|------|-----------------|
-| Week 1 | Research complete, first 10-15 carousels posted |
-| Week 2 | Engagement patterns identified, hooks optimized |
-| Week 3 | 50K-200K views per post, viral potential |
-| Week 4+ | Consistent growth, monetization ready |
-
----
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
-
----
-
-## 📄 License
-
-MIT License — Use it, modify it, sell it. Just give credit.
-
----
-
-<p align="center">
-  <strong>🟢 GET VIRAL OR DIE TRYING 💀🔥</strong>
-</p>
-
-<p align="center">
-  Made with 🟢 by the Viral Engine Team
-</p>
+- [GitHub Repository](https://github.com/Atum246/ig-viral-engine)
+- [Live Site](https://atum246.github.io/ig-viral-engine/)
+- [Setup Guide](docs/SETUP-GUIDE.md)
+- [Cloud Deployment](docs/CLOUD-DEPLOYMENT.md)

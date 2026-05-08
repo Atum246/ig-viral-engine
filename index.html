@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🟢 IG Viral Engine — The Autonomous Instagram Growth Machine</title>
+    <title>IG Viral Engine — Autonomous Instagram Growth</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -11,13 +14,108 @@
             box-sizing: border-box;
         }
         
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: #0a0a0a;
-            color: #ffffff;
-            line-height: 1.6;
+        :root {
+            --bg: #050505;
+            --bg-card: #0d0d0d;
+            --bg-card-hover: #141414;
+            --border: #1a1a1a;
+            --border-hover: #2a2a2a;
+            --text: #e5e5e5;
+            --text-dim: #737373;
+            --text-bright: #ffffff;
+            --accent: #22c55e;
+            --accent-dim: rgba(34, 197, 94, 0.15);
+            --red: #ef4444;
+            --radius: 12px;
         }
         
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        /* ============ NAV ============ */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 0 24px;
+            background: rgba(5, 5, 5, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .nav-logo {
+            font-weight: 800;
+            font-size: 18px;
+            color: var(--text-bright);
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+        
+        .nav-logo span {
+            color: var(--accent);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--text-bright);
+        }
+        
+        .nav-cta {
+            padding: 8px 20px;
+            background: var(--accent);
+            color: var(--bg) !important;
+            border-radius: 8px;
+            font-weight: 600 !important;
+            transition: opacity 0.2s !important;
+        }
+        
+        .nav-cta:hover {
+            opacity: 0.9;
+        }
+        
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        /* ============ HERO ============ */
         .hero {
             min-height: 100vh;
             display: flex;
@@ -25,8 +123,7 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 40px 20px;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            padding: 120px 24px 80px;
             position: relative;
             overflow: hidden;
         }
@@ -34,462 +131,936 @@
         .hero::before {
             content: '';
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(233, 69, 96, 0.1) 0%, transparent 50%);
-            animation: pulse 4s ease-in-out infinite;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 600px;
+            background: radial-gradient(ellipse, var(--accent-dim) 0%, transparent 70%);
+            pointer-events: none;
         }
         
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 0.5; }
-            50% { transform: scale(1.1); opacity: 1; }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            background: var(--accent-dim);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--accent);
+            margin-bottom: 32px;
         }
         
-        .hero-content {
-            position: relative;
-            z-index: 1;
+        .hero-badge .dot {
+            width: 6px;
+            height: 6px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: pulse-dot 2s infinite;
         }
         
-        .emoji {
-            font-size: 80px;
-            margin-bottom: 30px;
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
         }
         
         h1 {
-            font-size: 4rem;
+            font-size: clamp(2.5rem, 7vw, 5rem);
             font-weight: 900;
-            margin-bottom: 20px;
-            background: linear-gradient(90deg, #e94560, #ff6b6b, #e94560);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            line-height: 1.05;
+            letter-spacing: -2px;
+            color: var(--text-bright);
+            margin-bottom: 24px;
+            max-width: 800px;
         }
         
-        .tagline {
-            font-size: 1.5rem;
-            color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 40px;
-            max-width: 600px;
+        .hero-desc {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-dim);
+            max-width: 560px;
+            margin-bottom: 48px;
+            line-height: 1.7;
         }
         
-        .cta-buttons {
+        .hero-actions {
             display: flex;
-            gap: 20px;
+            gap: 16px;
             flex-wrap: wrap;
             justify-content: center;
         }
         
         .btn {
-            padding: 15px 30px;
-            border-radius: 50px;
-            font-size: 1.1rem;
+            padding: 14px 28px;
+            border-radius: var(--radius);
+            font-size: 15px;
             font-weight: 600;
             text-decoration: none;
-            transition: all 0.3s ease;
+            transition: all 0.2s;
             display: inline-flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
+            border: none;
+            cursor: pointer;
         }
         
         .btn-primary {
-            background: #e94560;
-            color: white;
+            background: var(--accent);
+            color: var(--bg);
         }
         
         .btn-primary:hover {
-            background: #ff6b6b;
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(233, 69, 96, 0.4);
+            background: #16a34a;
         }
         
-        .btn-secondary {
+        .btn-ghost {
             background: transparent;
-            color: white;
-            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: var(--text);
+            border: 1px solid var(--border);
         }
         
-        .btn-secondary:hover {
-            border-color: #e94560;
-            color: #e94560;
-            transform: translateY(-3px);
+        .btn-ghost:hover {
+            border-color: var(--border-hover);
+            background: var(--bg-card);
         }
         
-        .features {
-            padding: 100px 20px;
+        .hero-stats {
+            display: flex;
+            gap: 48px;
+            margin-top: 80px;
+            padding-top: 40px;
+            border-top: 1px solid var(--border);
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text-bright);
+            letter-spacing: -1px;
+        }
+        
+        .stat-label {
+            font-size: 13px;
+            color: var(--text-dim);
+            margin-top: 4px;
+        }
+        
+        /* ============ SECTIONS ============ */
+        section {
+            padding: 120px 24px;
+        }
+        
+        .container {
             max-width: 1200px;
             margin: 0 auto;
         }
         
-        .features h2 {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 60px;
-            color: #e94560;
+        .section-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 16px;
         }
         
-        .feature-grid {
+        .section-title {
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 800;
+            color: var(--text-bright);
+            letter-spacing: -1px;
+            margin-bottom: 16px;
+            line-height: 1.15;
+        }
+        
+        .section-desc {
+            font-size: 1.1rem;
+            color: var(--text-dim);
+            max-width: 600px;
+            margin-bottom: 64px;
+        }
+        
+        /* ============ FEATURES ============ */
+        .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
         }
         
-        .feature-card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
+        .feature {
+            background: var(--bg);
             padding: 40px;
-            transition: all 0.3s ease;
+            transition: background 0.2s;
         }
         
-        .feature-card:hover {
-            transform: translateY(-10px);
-            border-color: #e94560;
-            box-shadow: 0 20px 40px rgba(233, 69, 96, 0.2);
+        .feature:hover {
+            background: var(--bg-card);
         }
         
         .feature-icon {
-            font-size: 48px;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: var(--accent-dim);
+            display: flex;
+            align-items: center;
+            justify-content: center;
             margin-bottom: 20px;
+            font-size: 18px;
         }
         
-        .feature-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            color: #ffffff;
+        .feature h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-bright);
+            margin-bottom: 8px;
         }
         
-        .feature-card p {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 1rem;
+        .feature p {
+            font-size: 14px;
+            color: var(--text-dim);
+            line-height: 1.6;
         }
         
-        .cost-section {
-            padding: 100px 20px;
-            text-align: center;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        /* ============ HOW IT WORKS ============ */
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 32px;
         }
         
-        .cost-section h2 {
-            font-size: 2.5rem;
-            margin-bottom: 40px;
+        .step {
+            position: relative;
         }
         
-        .cost-badge {
-            display: inline-block;
-            font-size: 6rem;
+        .step-num {
+            font-size: 64px;
             font-weight: 900;
-            color: #00ff88;
-            margin-bottom: 30px;
-            text-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
+            color: var(--border);
+            line-height: 1;
+            margin-bottom: 16px;
         }
         
-        .cost-list {
-            list-style: none;
-            max-width: 500px;
+        .step h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-bright);
+            margin-bottom: 8px;
+        }
+        
+        .step p {
+            font-size: 14px;
+            color: var(--text-dim);
+            line-height: 1.6;
+        }
+        
+        /* ============ COST ============ */
+        .cost-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 80px;
+            text-align: center;
+        }
+        
+        .cost-big {
+            font-size: clamp(4rem, 10vw, 8rem);
+            font-weight: 900;
+            color: var(--accent);
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+        
+        .cost-sub {
+            font-size: 1.1rem;
+            color: var(--text-dim);
+            margin-bottom: 48px;
+        }
+        
+        .cost-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            max-width: 800px;
             margin: 0 auto;
+        }
+        
+        .cost-item {
+            background: var(--bg);
+            padding: 24px;
             text-align: left;
         }
         
-        .cost-list li {
-            padding: 15px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            justify-content: space-between;
-            font-size: 1.1rem;
+        .cost-item-label {
+            font-size: 13px;
+            color: var(--text-dim);
+            margin-bottom: 4px;
         }
         
-        .cost-list li span:last-child {
-            color: #00ff88;
-            font-weight: 600;
+        .cost-item-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--accent);
         }
         
-        .deploy-section {
-            padding: 100px 20px;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-        
-        .deploy-section h2 {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 60px;
-        }
-        
-        .deploy-options {
+        /* ============ COMMANDS ============ */
+        .commands-list {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
-        
-        .deploy-card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 30px;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-        
-        .deploy-card:hover {
-            transform: translateY(-5px);
-            border-color: #e94560;
-        }
-        
-        .deploy-card h3 {
-            margin-bottom: 10px;
-            color: #e94560;
-        }
-        
-        .deploy-card p {
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 20px;
-        }
-        
-        .deploy-btn {
-            display: inline-block;
-            padding: 10px 25px;
-            background: #e94560;
-            color: white;
-            text-decoration: none;
-            border-radius: 25px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-        
-        .deploy-btn:hover {
-            background: #ff6b6b;
-            transform: scale(1.05);
-        }
-        
-        .commands-section {
-            padding: 100px 20px;
-            background: linear-gradient(135deg, #16213e 0%, #0f3460 100%);
-        }
-        
-        .commands-section h2 {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 60px;
-        }
-        
-        .commands-grid {
-            max-width: 800px;
-            margin: 0 auto;
-            display: grid;
-            gap: 15px;
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            max-width: 700px;
         }
         
         .command {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 10px;
-            padding: 20px 25px;
             display: flex;
             align-items: center;
-            gap: 20px;
-            font-family: 'Courier New', monospace;
+            gap: 24px;
+            background: var(--bg);
+            padding: 20px 28px;
+            transition: background 0.2s;
         }
         
-        .command-name {
-            color: #e94560;
-            font-weight: 700;
+        .command:hover {
+            background: var(--bg-card);
+        }
+        
+        .command-cmd {
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--accent);
             min-width: 120px;
         }
         
         .command-desc {
-            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            color: var(--text-dim);
         }
         
-        .footer {
-            padding: 50px 20px;
-            text-align: center;
-            background: #000;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        /* ============ DEPLOY ============ */
+        .deploy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
         }
         
-        .footer p {
-            color: rgba(255, 255, 255, 0.5);
-            margin-bottom: 20px;
+        .deploy-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 32px;
+            transition: all 0.2s;
         }
         
-        .footer .mantra {
-            font-size: 1.5rem;
+        .deploy-card:hover {
+            border-color: var(--border-hover);
+            background: var(--bg-card-hover);
+        }
+        
+        .deploy-card h3 {
+            font-size: 18px;
             font-weight: 700;
-            color: #e94560;
-            margin-bottom: 30px;
+            color: var(--text-bright);
+            margin-bottom: 8px;
         }
         
-        .social-links {
+        .deploy-card .tier {
+            font-size: 13px;
+            color: var(--accent);
+            margin-bottom: 12px;
+        }
+        
+        .deploy-card p {
+            font-size: 14px;
+            color: var(--text-dim);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .deploy-link {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--accent);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .deploy-link:hover {
+            text-decoration: underline;
+        }
+        
+        /* ============ GETTING STARTED ============ */
+        .getting-started-steps {
+            counter-reset: gs;
+            display: grid;
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            max-width: 800px;
+        }
+        
+        .gs-step {
+            counter-increment: gs;
+            background: var(--bg);
+            padding: 32px 32px 32px 80px;
+            position: relative;
+            transition: background 0.2s;
+        }
+        
+        .gs-step:hover {
+            background: var(--bg-card);
+        }
+        
+        .gs-step::before {
+            content: counter(gs);
+            position: absolute;
+            left: 32px;
+            top: 32px;
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--border);
+        }
+        
+        .gs-step h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-bright);
+            margin-bottom: 8px;
+        }
+        
+        .gs-step p {
+            font-size: 14px;
+            color: var(--text-dim);
+            line-height: 1.6;
+        }
+        
+        .gs-step code {
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 13px;
+            background: var(--accent-dim);
+            color: var(--accent);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+        
+        /* ============ FOOTER ============ */
+        footer {
+            padding: 48px 24px;
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+        
+        footer p {
+            font-size: 13px;
+            color: var(--text-dim);
+        }
+        
+        footer a {
+            color: var(--text-dim);
+            text-decoration: none;
+        }
+        
+        footer a:hover {
+            color: var(--text);
+        }
+        
+        .footer-links {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 24px;
+            margin-bottom: 16px;
         }
         
-        .social-links a {
-            color: rgba(255, 255, 255, 0.5);
-            text-decoration: none;
-            transition: color 0.3s ease;
+        /* ============ DIVIDER ============ */
+        .divider {
+            width: 100%;
+            height: 1px;
+            background: var(--border);
         }
         
-        .social-links a:hover {
-            color: #e94560;
+        /* ============ MOBILE ============ */
+        @media (max-width: 1024px) {
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .steps {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
         
         @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 64px;
+                left: 0;
+                right: 0;
+                background: var(--bg);
+                border-bottom: 1px solid var(--border);
+                flex-direction: column;
+                padding: 24px;
+                gap: 16px;
+            }
+            
+            .nav-links.open {
+                display: flex;
+            }
+            
+            .mobile-toggle {
+                display: block;
+            }
+            
+            .hero-stats {
+                gap: 24px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .steps {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+            
+            .cost-section {
+                padding: 48px 24px;
+            }
+            
+            .cost-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .command {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+            
+            .command-cmd {
+                min-width: auto;
+            }
+            
+            .deploy-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            section {
+                padding: 80px 16px;
+            }
+        }
+        
+        @media (max-width: 480px) {
             h1 {
-                font-size: 2.5rem;
+                letter-spacing: -1px;
             }
             
-            .tagline {
-                font-size: 1.2rem;
+            .hero-actions {
+                flex-direction: column;
+                width: 100%;
             }
             
-            .cost-badge {
-                font-size: 4rem;
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .gs-step {
+                padding-left: 60px;
+            }
+            
+            .gs-step::before {
+                left: 20px;
             }
         }
     </style>
 </head>
 <body>
+    <!-- NAV -->
+    <nav>
+        <div class="nav-inner">
+            <a href="#" class="nav-logo">IG<span>Viral</span>Engine</a>
+            <div class="nav-links" id="navLinks">
+                <a href="#features">Features</a>
+                <a href="#how">How It Works</a>
+                <a href="#start">Get Started</a>
+                <a href="#deploy">Deploy</a>
+                <a href="https://github.com/Atum246/ig-viral-engine" class="nav-cta">GitHub</a>
+            </div>
+            <button class="mobile-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')">=</button>
+        </div>
+    </nav>
+
+    <!-- HERO -->
     <section class="hero">
-        <div class="hero-content">
-            <div class="emoji">🟢</div>
-            <h1>IG VIRAL ENGINE</h1>
-            <p class="tagline">The Autonomous Instagram Growth Machine<br>GET VIRAL OR DIE TRYING 💀🔥</p>
-            <div class="cta-buttons">
-                <a href="https://github.com/Atum246/ig-viral-engine" class="btn btn-primary">
-                    ⭐ Star on GitHub
-                </a>
-                <a href="#features" class="btn btn-secondary">
-                    🚀 Learn More
-                </a>
+        <div class="hero-badge">
+            <span class="dot"></span>
+            100% Free — No Subscriptions
+        </div>
+        <h1>Autonomous Instagram Growth Engine</h1>
+        <p class="hero-desc">
+            Researches your niche, creates professional carousels, posts to Instagram, 
+            tests everything, and gets smarter every cycle. Built with free tools. Zero cost.
+        </p>
+        <div class="hero-actions">
+            <a href="#start" class="btn btn-primary">Get Started</a>
+            <a href="https://github.com/Atum246/ig-viral-engine" class="btn btn-ghost">View on GitHub</a>
+        </div>
+        <div class="hero-stats">
+            <div class="stat">
+                <div class="stat-value">$0</div>
+                <div class="stat-label">Total Cost</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">17</div>
+                <div class="stat-label">Files</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">30+</div>
+                <div class="stat-label">n8n Nodes</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">5</div>
+                <div class="stat-label">Cloud Options</div>
             </div>
         </div>
     </section>
-    
-    <section class="features" id="features">
-        <h2>🧠 What It Does</h2>
-        <div class="feature-grid">
-            <div class="feature-card">
-                <div class="feature-icon">🔍</div>
-                <h3>Deep Niche Research</h3>
-                <p>Studies your niche across hundreds of sources. Learns audience psychology, hooks, trends, and competitors like a PhD student.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">🎨</div>
-                <h3>Beautiful Carousels</h3>
-                <p>Creates stunning carousels using HTML/CSS/JS. Not generic AI garbage — professional, on-brand, scroll-stopping content.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">📤</div>
-                <h3>Auto-Posting</h3>
-                <p>Publishes to Instagram at optimal times. Tests different posting schedules to find what works best for YOUR audience.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">📊</div>
-                <h3>A/B Testing</h3>
-                <p>Tests hooks, formats, captions, and posting times. Every post is an experiment. Every experiment makes the next one better.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">💰</div>
-                <h3>Monetization Alerts</h3>
-                <p>When you're ready to monetize, it tells you. Suggests products, pricing, and strategies based on your niche and audience.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">💬</div>
-                <h3>Telegram Chat</h3>
-                <p>Chat with your AI assistant on Telegram. Get status updates, analytics, and control everything with simple commands.</p>
-            </div>
-        </div>
-    </section>
-    
-    <section class="cost-section">
-        <h2>💰 Total Cost</h2>
-        <div class="cost-badge">$0</div>
-        <ul class="cost-list">
-            <li><span>🧠 AI Brain (Ollama)</span><span>FREE</span></li>
-            <li><span>⚙️ Automation (n8n)</span><span>FREE</span></li>
-            <li><span>📱 Chat (Telegram)</span><span>FREE</span></li>
-            <li><span>📸 Posting (IG API)</span><span>FREE</span></li>
-            <li><span>🖼️ Rendering (Puppeteer)</span><span>FREE</span></li>
-            <li><span>🖥️ Hosting (Cloud)</span><span>FREE</span></li>
-            <li><span><strong>TOTAL</strong></span><span><strong>$0</strong></span></li>
-        </ul>
-    </section>
-    
-    <section class="deploy-section">
-        <h2>☁️ Deploy in 3 Clicks</h2>
-        <div class="deploy-options">
-            <div class="deploy-card">
-                <h3>Render.com</h3>
-                <p>Easiest setup. 750 free hours/month.</p>
-                <a href="https://render.com" class="deploy-btn">Deploy Now</a>
-            </div>
-            <div class="deploy-card">
-                <h3>Railway.app</h3>
-                <p>Fast performance. $5 free credit/month.</p>
-                <a href="https://railway.app" class="deploy-btn">Deploy Now</a>
-            </div>
-            <div class="deploy-card">
-                <h3>Fly.io</h3>
-                <p>Most powerful. 3 free VMs.</p>
-                <a href="https://fly.io" class="deploy-btn">Deploy Now</a>
-            </div>
-            <div class="deploy-card">
-                <h3>Oracle Cloud</h3>
-                <p>Always free. 4 cores, 24GB RAM.</p>
-                <a href="https://cloud.oracle.com/free" class="deploy-btn">Deploy Now</a>
+
+    <!-- FEATURES -->
+    <section id="features">
+        <div class="container">
+            <div class="section-label">Capabilities</div>
+            <h2 class="section-title">What It Does</h2>
+            <p class="section-desc">
+                Every feature is designed to grow your Instagram account. 
+                Research, create, post, analyze, optimize, repeat.
+            </p>
+            <div class="features-grid">
+                <div class="feature">
+                    <div class="feature-icon">R</div>
+                    <h3>Deep Niche Research</h3>
+                    <p>Studies your niche across hundreds of sources. Learns audience psychology, viral hooks, competitor strategies, and trending topics.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">C</div>
+                    <h3>Carousel Generation</h3>
+                    <p>Creates professional carousels using HTML, CSS, and JavaScript. Not generic templates — real designs that match your brand identity.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">P</div>
+                    <h3>Auto-Posting</h3>
+                    <p>Publishes to Instagram at optimal times. Uses the Instagram Graph API to post carousels automatically.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">T</div>
+                    <h3>A/B Testing</h3>
+                    <p>Tests hooks, formats, captions, and posting times. Every post is an experiment that improves the next one.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">A</div>
+                    <h3>Analytics Tracking</h3>
+                    <p>Monitors likes, comments, saves, shares, and follower growth. Identifies what works and what doesn't.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">M</div>
+                    <h3>Monetization Alerts</h3>
+                    <p>When your account is ready, it suggests products, pricing, and strategies to start earning revenue.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">B</div>
+                    <h3>Brand Identity</h3>
+                    <p>Upload a sample carousel and it reverse-engineers your style — colors, fonts, layout, spacing. Every post matches.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">H</div>
+                    <h3>Hook Library</h3>
+                    <p>Builds a database of viral hooks in your niche. Tests which hooks your audience responds to best.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">S</div>
+                    <h3>Telegram Interface</h3>
+                    <p>Control everything from Telegram. Send commands, get status updates, view analytics, and chat naturally.</p>
+                </div>
             </div>
         </div>
     </section>
-    
-    <section class="commands-section">
-        <h2>🤖 Telegram Commands</h2>
-        <div class="commands-grid">
-            <div class="command">
-                <span class="command-name">/start</span>
-                <span class="command-desc">Welcome & setup</span>
-            </div>
-            <div class="command">
-                <span class="command-name">/niche</span>
-                <span class="command-desc">Set your niche & start research</span>
-            </div>
-            <div class="command">
-                <span class="command-name">/create</span>
-                <span class="command-desc">Generate carousel</span>
-            </div>
-            <div class="command">
-                <span class="command-name">/post</span>
-                <span class="command-desc">Post to Instagram</span>
-            </div>
-            <div class="command">
-                <span class="command-name">/analytics</span>
-                <span class="command-desc">View performance</span>
-            </div>
-            <div class="command">
-                <span class="command-name">/monetize</span>
-                <span class="command-desc">Monetization strategies</span>
-            </div>
-            <div class="command">
-                <span class="command-name">/status</span>
-                <span class="command-desc">System status</span>
-            </div>
-            <div class="command">
-                <span class="command-name">/help</span>
-                <span class="command-desc">Show all commands</span>
+
+    <!-- HOW IT WORKS -->
+    <section id="how" style="background: var(--bg-card);">
+        <div class="container">
+            <div class="section-label">Process</div>
+            <h2 class="section-title">How It Works</h2>
+            <p class="section-desc">
+                A continuous loop that gets smarter with every post.
+            </p>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-num">01</div>
+                    <h3>Research</h3>
+                    <p>You set a niche. The system studies hundreds of sources — competitors, psychology, hooks, trends, hashtags.</p>
+                </div>
+                <div class="step">
+                    <div class="step-num">02</div>
+                    <h3>Create</h3>
+                    <p>Generates professional carousels with scroll-stopping hooks, value-driven slides, and strong CTAs.</p>
+                </div>
+                <div class="step">
+                    <div class="step-num">03</div>
+                    <h3>Post</h3>
+                    <p>Publishes to Instagram at the optimal time. Tracks every metric — reach, saves, shares, engagement.</p>
+                </div>
+                <div class="step">
+                    <div class="step-num">04</div>
+                    <h3>Optimize</h3>
+                    <p>Analyzes what worked. Tests new hooks, formats, and times. Every cycle makes the next post better.</p>
+                </div>
             </div>
         </div>
     </section>
-    
-    <footer class="footer">
-        <p class="mantra">GET VIRAL OR DIE TRYING 💀🔥</p>
-        <p>Built with 🟢 by the Viral Engine Team</p>
-        <div class="social-links">
+
+    <!-- COST -->
+    <section>
+        <div class="container">
+            <div class="cost-section">
+                <div class="cost-big">$0</div>
+                <div class="cost-sub">Total cost to run the entire system</div>
+                <div class="cost-grid">
+                    <div class="cost-item">
+                        <div class="cost-item-label">AI Brain</div>
+                        <div class="cost-item-value">Ollama — Free</div>
+                    </div>
+                    <div class="cost-item">
+                        <div class="cost-item-label">Automation</div>
+                        <div class="cost-item-value">n8n — Free</div>
+                    </div>
+                    <div class="cost-item">
+                        <div class="cost-item-label">Chat</div>
+                        <div class="cost-item-value">Telegram — Free</div>
+                    </div>
+                    <div class="cost-item">
+                        <div class="cost-item-label">IG Posting</div>
+                        <div class="cost-item-value">Graph API — Free</div>
+                    </div>
+                    <div class="cost-item">
+                        <div class="cost-item-label">Rendering</div>
+                        <div class="cost-item-value">Puppeteer — Free</div>
+                    </div>
+                    <div class="cost-item">
+                        <div class="cost-item-label">Hosting</div>
+                        <div class="cost-item-value">Cloud — Free</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- GETTING STARTED -->
+    <section id="start" style="background: var(--bg-card);">
+        <div class="container">
+            <div class="section-label">Setup</div>
+            <h2 class="section-title">Getting Started</h2>
+            <p class="section-desc">
+                Follow these steps to get the system running. Total setup time: about 30 minutes.
+            </p>
+            <div class="getting-started-steps">
+                <div class="gs-step">
+                    <h3>Create a Telegram Bot</h3>
+                    <p>Open Telegram, search for <code>@BotFather</code>, send <code>/newbot</code>, and follow the prompts. Copy the bot token it gives you — you will need it later.</p>
+                </div>
+                <div class="gs-step">
+                    <h3>Get Your Chat ID</h3>
+                    <p>Send any message to your new bot. Then open <code>https://api.telegram.org/botYOUR_TOKEN/getUpdates</code> in your browser. Find <code>"chat":{"id": 123456789}</code> — that number is your chat ID.</p>
+                </div>
+                <div class="gs-step">
+                    <h3>Switch Instagram to Business Account</h3>
+                    <p>In Instagram, go to Settings, Account, Switch to Professional Account. Choose Business or Creator. Connect it to a Facebook Page (create one if needed). This is free and required for the API.</p>
+                </div>
+                <div class="gs-step">
+                    <h3>Create a Facebook Developer App</h3>
+                    <p>Go to <code>developers.facebook.com</code>, create a new app (Business type), add the Instagram Graph API product. In Graph API Explorer, generate a token with <code>instagram_basic</code> and <code>instagram_content_publish</code> permissions.</p>
+                </div>
+                <div class="gs-step">
+                    <h3>Get Your Instagram User ID</h3>
+                    <p>In Graph API Explorer, run <code>me/accounts</code> to find your Page ID. Then run <code>PAGE_ID?fields=instagram_business_account</code>. The ID returned is your Instagram User ID.</p>
+                </div>
+                <div class="gs-step">
+                    <h3>Deploy the Workflow</h3>
+                    <p>Choose a free cloud platform (Render, Railway, Fly.io, or Oracle Cloud). Connect your GitHub repo. Set the environment variables: <code>TELEGRAM_BOT_TOKEN</code>, <code>TELEGRAM_CHAT_ID</code>, <code>IG_USER_ID</code>, <code>IG_ACCESS_TOKEN</code>.</p>
+                </div>
+                <div class="gs-step">
+                    <h3>Import into n8n</h3>
+                    <p>Open your n8n instance. Click "Add Workflow", then "Import from File". Upload <code>IG-VIRAL-ENGINE.json</code>. Configure the Telegram credential with your bot token. Activate the workflow.</p>
+                </div>
+                <div class="gs-step">
+                    <h3>Install Ollama</h3>
+                    <p>On your server, run <code>curl -fsSL https://ollama.ai/install.sh | sh</code> then <code>ollama pull llama3</code>. This is your free AI brain — no API keys, no subscriptions.</p>
+                </div>
+                <div class="gs-step">
+                    <h3>Send Your First Command</h3>
+                    <p>Open Telegram, message your bot <code>/start</code>. You should get a welcome reply. Then send <code>/niche your niche here</code> to begin. The system starts researching immediately.</p>
+                </div>
+                <div class="gs-step">
+                    <h3>Create and Post</h3>
+                    <p>Send <code>/create</code> to generate your first carousel. Review it. Send <code>/post</code> to publish it to Instagram. The system tracks performance and improves from there.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- COMMANDS -->
+    <section>
+        <div class="container">
+            <div class="section-label">Interface</div>
+            <h2 class="section-title">Telegram Commands</h2>
+            <p class="section-desc">
+                Control the system from Telegram. Send commands or just chat naturally.
+            </p>
+            <div class="commands-list">
+                <div class="command">
+                    <span class="command-cmd">/start</span>
+                    <span class="command-desc">Welcome message and setup guide</span>
+                </div>
+                <div class="command">
+                    <span class="command-cmd">/niche</span>
+                    <span class="command-desc">Set your niche and begin deep research</span>
+                </div>
+                <div class="command">
+                    <span class="command-cmd">/brand</span>
+                    <span class="command-desc">Upload brand identity (colors, fonts, style)</span>
+                </div>
+                <div class="command">
+                    <span class="command-cmd">/research</span>
+                    <span class="command-desc">Trigger niche research manually</span>
+                </div>
+                <div class="command">
+                    <span class="command-cmd">/create</span>
+                    <span class="command-desc">Generate a new carousel post</span>
+                </div>
+                <div class="command">
+                    <span class="command-cmd">/post</span>
+                    <span class="command-desc">Publish the latest carousel to Instagram</span>
+                </div>
+                <div class="command">
+                    <span class="command-cmd">/analytics</span>
+                    <span class="command-desc">View performance metrics</span>
+                </div>
+                <div class="command">
+                    <span class="command-cmd">/report</span>
+                    <span class="command-desc">Full weekly intelligence report</span>
+                </div>
+                <div class="command">
+                    <span class="command-cmd">/monetize</span>
+                    <span class="command-desc">Monetization strategies and advice</span>
+                </div>
+                <div class="command">
+                    <span class="command-cmd">/status</span>
+                    <span class="command-desc">Check system status</span>
+                </div>
+                <div class="command">
+                    <span class="command-cmd">/help</span>
+                    <span class="command-desc">List all available commands</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DEPLOY -->
+    <section id="deploy" style="background: var(--bg-card);">
+        <div class="container">
+            <div class="section-label">Hosting</div>
+            <h2 class="section-title">Deploy to Free Cloud</h2>
+            <p class="section-desc">
+                Pick a platform. Connect your repo. Set environment variables. Done.
+            </p>
+            <div class="deploy-grid">
+                <div class="deploy-card">
+                    <h3>Render.com</h3>
+                    <div class="tier">750 free hours per month</div>
+                    <p>Easiest setup. Connect your GitHub repo and it deploys automatically. Good for getting started fast.</p>
+                    <a href="https://render.com" class="deploy-link">Deploy on Render</a>
+                </div>
+                <div class="deploy-card">
+                    <h3>Railway.app</h3>
+                    <div class="tier">$5 free credit per month</div>
+                    <p>Fast deployments with good performance. Auto-detects Dockerfile and builds for you.</p>
+                    <a href="https://railway.app" class="deploy-link">Deploy on Railway</a>
+                </div>
+                <div class="deploy-card">
+                    <h3>Fly.io</h3>
+                    <div class="tier">3 VMs free</div>
+                    <p>Most powerful free tier. Run containers close to your users. Good for global reach.</p>
+                    <a href="https://fly.io" class="deploy-link">Deploy on Fly</a>
+                </div>
+                <div class="deploy-card">
+                    <h3>Oracle Cloud</h3>
+                    <div class="tier">Always free — 4 cores, 24GB RAM</div>
+                    <p>Best specs on the free tier. ARM Ampere instance runs 24/7 with no cost. Requires more setup.</p>
+                    <a href="https://cloud.oracle.com/free" class="deploy-link">Deploy on Oracle</a>
+                </div>
+                <div class="deploy-card">
+                    <h3>Google Cloud Run</h3>
+                    <div class="tier">2 million requests per month</div>
+                    <p>Serverless. Pay only for what you use (free tier covers most usage). Scales to zero when idle.</p>
+                    <a href="https://cloud.google.com/run" class="deploy-link">Deploy on GCP</a>
+                </div>
+                <div class="deploy-card">
+                    <h3>Your Own Server</h3>
+                    <div class="tier">Any Linux machine</div>
+                    <p>Run on a VPS, home server, or old laptop. Full control. Use the quick-start script to install everything.</p>
+                    <a href="https://github.com/Atum246/ig-viral-engine/blob/main/docs/SETUP-GUIDE.md" class="deploy-link">View Setup Guide</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-links">
             <a href="https://github.com/Atum246/ig-viral-engine">GitHub</a>
             <a href="https://github.com/Atum246/ig-viral-engine/blob/main/docs/SETUP-GUIDE.md">Docs</a>
             <a href="https://github.com/Atum246/ig-viral-engine/blob/main/docs/CLOUD-DEPLOYMENT.md">Deploy</a>
+            <a href="https://github.com/Atum246/ig-viral-engine/blob/main/docs/FREE-TOOLS-REFERENCE.md">Free Tools</a>
         </div>
+        <p>IG Viral Engine — Open Source, Free Forever</p>
     </footer>
+
+    <script>
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    // Close mobile menu
+                    document.getElementById('navLinks').classList.remove('open');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
