@@ -164,10 +164,18 @@ Publishes it to Instagram. The system tracks performance and improves from there
 | `/analytics` | View performance metrics |
 | `/report` | Full weekly intelligence report |
 | `/monetize` | Monetization strategies and advice |
+| `/trends` | Trend detection and jacking opportunities |
+| `/competitors` | Competitor spy — analyze top accounts |
+| `/hooks` | Generate viral hook library for your niche |
+| `/hashtags` | Hashtag strategy and optimization |
+| `/schedule` | Optimal posting schedule |
+| `/repurpose` | Repurpose content for TikTok, Twitter, Pinterest, YouTube, LinkedIn |
+| `/health` | Account health monitor and diagnostics |
+| `/milestones` | Growth milestone predictions |
 | `/status` | Check system status |
 | `/help` | List all available commands |
 
-You can also chat naturally. Ask questions, request content ideas, or get strategy advice.
+You can also chat naturally. Ask questions, request content ideas, or get strategy advice. The system responds like a knowledgeable social media strategist.
 
 ---
 
