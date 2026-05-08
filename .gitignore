@@ -1,0 +1,46 @@
+# 🟢 IG VIRAL ENGINE — Git Ignore
+
+# Environment variables (NEVER commit these!)
+.env
+.env.local
+.env.production
+
+# Node modules
+node_modules/
+package-lock.json
+
+# Output files
+output/
+tmp/
+*.png
+*.jpg
+*.jpeg
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+logs/
+
+# Docker
+docker-compose.override.yml
+
+# n8n data
+.n8n/
+n8n_data/
+
+# Ollama data
+ollama_data/
+
+# Temporary files
+temp/
+tmp/
+.cache/

@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    .carousel-container {
+      width: 1080px;
+      background: #000;
+    }
+    
+    .slide {
+      width: 1080px;
+      height: 1080px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 80px;
+    }
+    
+    /* ============ TEMPLATE STYLES ============ */
+    
+    /* Style 1: Dark Minimal */
+    .style-dark-minimal {
+      background: #0a0a0a;
+      font-family: 'Inter', sans-serif;
+    }
+    .style-dark-minimal .slide-number {
+      position: absolute;
+      top: 40px;
+      right: 50px;
+      font-size: 14px;
+      color: rgba(255,255,255,0.3);
+      font-weight: 300;
+      letter-spacing: 3px;
+    }
+    .style-dark-minimal .accent-line {
+      width: 60px;
+      height: 4px;
+      background: #e94560;
+      margin-bottom: 30px;
+    }
+    .style-dark-minimal h1 {
+      font-size: 64px;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.1;
+      letter-spacing: -2px;
+      text-align: center;
+    }
+    .style-dark-minimal h1.uppercase { text-transform: uppercase; }
+    .style-dark-minimal .subtext {
+      font-size: 22px;
+      color: rgba(255,255,255,0.6);
+      font-weight: 300;
+      line-height: 1.6;
+      text-align: center;
+      margin-top: 20px;
+    }
+    .style-dark-minimal .body-text {
+      font-size: 20px;
+      color: rgba(255,255,255,0.75);
+      font-weight: 400;
+      line-height: 1.7;
+      text-align: center;
+      max-width: 800px;
+    }
+    .style-dark-minimal .highlight {
+      color: #e94560;
+      font-weight: 700;
+    }
+    .style-dark-minimal .cta-box {
+      margin-top: 40px;
+      padding: 18px 50px;
+      border: 2px solid #e94560;
+      border-radius: 50px;
+      font-size: 18px;
+      font-weight: 600;
+      color: #e94560;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    .style-dark-minimal .decorative-circle {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(233,69,96,0.1);
+    }
+    .style-dark-minimal .circle-1 {
+      width: 400px; height: 400px;
+      top: -100px; right: -100px;
+    }
+    .style-dark-minimal .circle-2 {
+      width: 250px; height: 250px;
+      bottom: -50px; left: -50px;
+    }
+    
+    /* Style 2: Bold Gradient */
+    .style-bold-gradient {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      font-family: 'Space Grotesk', sans-serif;
+    }
+    .style-bold-gradient .slide-number {
+      position: absolute;
+      top: 40px;
+      left: 50px;
+      font-size: 80px;
+      font-weight: 900;
+      color: rgba(255,255,255,0.08);
+    }
+    .style-bold-gradient h1 {
+      font-size: 72px;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.05;
+      text-align: center;
+      text-shadow: 0 4px 30px rgba(0,0,0,0.2);
+    }
+    .style-bold-gradient .subtext {
+      font-size: 24px;
+      color: rgba(255,255,255,0.85);
+      font-weight: 400;
+      text-align: center;
+      margin-top: 20px;
+    }
+    .style-bold-gradient .body-text {
+      font-size: 22px;
+      color: rgba(255,255,255,0.9);
+      text-align: center;
+      line-height: 1.7;
+      max-width: 800px;
+    }
+    .style-bold-gradient .cta-box {
+      margin-top: 40px;
+      padding: 20px 50px;
+      background: rgba(255,255,255,0.2);
+      backdrop-filter: blur(10px);
+      border-radius: 60px;
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 1px;
+    }
+    .style-bold-gradient .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.3;
+    }
+    .style-bold-gradient .blob-1 {
+      width: 300px; height: 300px;
+      background: #ff6b6b;
+      top: -50px; left: -50px;
+    }
+    .style-bold-gradient .blob-2 {
+      width: 200px; height: 200px;
+      background: #48dbfb;
+      bottom: 50px; right: 50px;
+    }
+    
+    /* Style 3: Clean Corporate */
+    .style-clean-corp {
+      background: #ffffff;
+      font-family: 'Inter', sans-serif;
+    }
+    .style-clean-corp .slide-number {
+      position: absolute;
+      bottom: 40px;
+      right: 50px;
+      font-size: 14px;
+      color: rgba(0,0,0,0.2);
+      font-weight: 600;
+    }
+    .style-clean-corp .top-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 8px;
+      background: linear-gradient(90deg, #2563eb, #7c3aed);
+    }
+    .style-clean-corp h1 {
+      font-size: 58px;
+      font-weight: 800;
+      color: #111827;
+      line-height: 1.15;
+      text-align: center;
+      letter-spacing: -1.5px;
+    }
+    .style-clean-corp .accent { color: #2563eb; }
+    .style-clean-corp .subtext {
+      font-size: 20px;
+      color: #6b7280;
+      text-align: center;
+      margin-top: 20px;
+      line-height: 1.6;
+    }
+    .style-clean-corp .body-text {
+      font-size: 20px;
+      color: #374151;
+      text-align: center;
+      line-height: 1.7;
+      max-width: 800px;
+    }
+    .style-clean-corp .cta-box {
+      margin-top: 40px;
+      padding: 18px 50px;
+      background: #2563eb;
+      border-radius: 12px;
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .style-clean-corp .dot-pattern {
+      position: absolute;
+      bottom: 30px;
+      left: 30px;
+      width: 100px;
+      height: 100px;
+      background-image: radial-gradient(circle, #2563eb 1px, transparent 1px);
+      background-size: 10px 10px;
+      opacity: 0.1;
+    }
+    
+    /* ============ UTILITY CLASSES ============ */
+    .flex-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      z-index: 1;
+    }
+    .text-block {
+      max-width: 850px;
+    }
+    .emoji-icon {
+      font-size: 48px;
+      margin-bottom: 20px;
+    }
+    .number-big {
+      font-size: 120px;
+      font-weight: 900;
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+    .list-items {
+      text-align: left;
+      width: 100%;
+      max-width: 750px;
+    }
+    .list-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      margin-bottom: 25px;
+      font-size: 22px;
+      line-height: 1.5;
+    }
+    .list-number {
+      min-width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="carousel-container">
+
+  <!-- ========== SLIDE 1: HOOK ========== -->
+  <div class="slide style-dark-minimal">
+    <div class="decorative-circle circle-1"></div>
+    <div class="decorative-circle circle-2"></div>
+    <span class="slide-number">01 / 07</span>
+    <div class="flex-center">
+      <div class="accent-line"></div>
+      <h1 class="uppercase">
+        THE #1 MISTAKE<br>
+        95% OF PEOPLE MAKE
+      </h1>
+      <p class="subtext">And what to do instead 👇</p>
+    </div>
+  </div>
+
+  <!-- ========== SLIDE 2: THE PROBLEM ========== -->
+  <div class="slide style-bold-gradient">
+    <span class="slide-number">02</span>
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="flex-center">
+      <div class="emoji-icon">❌</div>
+      <h1>THE PROBLEM</h1>
+      <p class="body-text" style="margin-top: 30px;">
+        Most people focus on the <strong>wrong things</strong>.
+        They chase vanity metrics instead of building
+        something that actually <strong>matters</strong>.
+      </p>
+    </div>
+  </div>
+
+  <!-- ========== SLIDE 3: THE TRUTH ========== -->
+  <div class="slide style-dark-minimal">
+    <div class="decorative-circle circle-1"></div>
+    <span class="slide-number">03 / 07</span>
+    <div class="flex-center">
+      <div class="accent-line"></div>
+      <h1>
+        HERE'S THE<br>
+        <span class="highlight">REAL TRUTH</span>
+      </h1>
+      <p class="body-text" style="margin-top: 30px;">
+        Success isn't about working harder.
+        It's about working on the <strong>right things</strong>
+        at the <strong>right time</strong>.
+      </p>
+    </div>
+  </div>
+
+  <!-- ========== SLIDE 4: STEP 1 ========== -->
+  <div class="slide style-clean-corp">
+    <div class="top-bar"></div>
+    <div class="dot-pattern"></div>
+    <span class="slide-number">04 / 07</span>
+    <div class="flex-center">
+      <div class="number-big accent">1</div>
+      <h1>IDENTIFY YOUR<br><span class="accent">NICHE</span></h1>
+      <p class="body-text" style="margin-top: 20px;">
+        Get crystal clear on WHO you serve.
+        The riches are in the <strong>niches</strong>.
+        Don't try to be everything to everyone.
+      </p>
+    </div>
+  </div>
+
+  <!-- ========== SLIDE 5: STEP 2 ========== -->
+  <div class="slide style-bold-gradient">
+    <span class="slide-number">05</span>
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="flex-center">
+      <div class="number-big" style="opacity: 0.15;">2</div>
+      <h1 style="margin-top: -80px;">MASTER THE<br>ALGORITHM</h1>
+      <p class="body-text" style="margin-top: 20px;">
+        Learn what the platform rewards.
+        <strong>Saves > Shares > Comments > Likes</strong>
+        Optimize for the metrics that matter.
+      </p>
+    </div>
+  </div>
+
+  <!-- ========== SLIDE 6: STEP 3 ========== -->
+  <div class="slide style-dark-minimal">
+    <div class="decorative-circle circle-2"></div>
+    <span class="slide-number">06 / 07</span>
+    <div class="flex-center">
+      <div class="number-big highlight">3</div>
+      <h1 style="margin-top: -20px;">
+        CREATE LIKE<br>
+        YOUR LIFE<br>
+        DEPENDS ON IT
+      </h1>
+      <p class="subtext">Quality over quantity. Always.</p>
+    </div>
+  </div>
+
+  <!-- ========== SLIDE 7: CTA ========== -->
+  <div class="slide style-clean-corp">
+    <div class="top-bar"></div>
+    <span class="slide-number">07 / 07</span>
+    <div class="flex-center">
+      <div class="emoji-icon">📌</div>
+      <h1>SAVE THIS<br>FOR LATER</h1>
+      <p class="subtext" style="margin-top: 20px;">
+        You'll need this when you're ready to level up.
+      </p>
+      <div class="cta-box">
+        FOLLOW FOR MORE →
+      </div>
+      <p style="margin-top: 30px; font-size: 16px; color: #9ca3af;">
+        💬 Drop a 🔥 if this resonated with you
+      </p>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

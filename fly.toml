@@ -1,0 +1,31 @@
+# Fly.io configuration for IG Viral Engine
+# https://fly.io (FREE tier: 3 shared-cpu VMs)
+
+app = "ig-viral-engine"
+primary_region = "iad"
+
+[build]
+
+[env]
+  N8N_BASIC_AUTH_ACTIVE = "true"
+  N8N_BASIC_AUTH_USER = "admin"
+  N8N_HOST = "0.0.0.0"
+  N8N_PORT = "5678"
+  N8N_PROTOCOL = "https"
+  GENERIC_TIMEZONE = "Asia/Shanghai"
+
+[[services]]
+  internal_port = 5678
+  protocol = "tcp"
+
+  [[services.ports]]
+    handlers = ["http"]
+    port = 80
+
+  [[services.ports]]
+    handlers = ["tls", "http"]
+    port = 443
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "512mb"

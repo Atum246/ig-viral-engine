@@ -1,0 +1,31 @@
+{
+  "name": "ig-viral-engine",
+  "version": "1.0.0",
+  "description": "🟢 The Autonomous Instagram Growth Machine — GET VIRAL OR DIE TRYING 💀🔥",
+  "main": "templates/render-carousel.js",
+  "scripts": {
+    "render": "node templates/render-carousel.js",
+    "start": "echo 'Import IG-VIRAL-ENGINE.json into n8n to get started!'",
+    "setup": "bash quick-start.sh"
+  },
+  "keywords": [
+    "instagram",
+    "automation",
+    "carousel",
+    "viral",
+    "growth",
+    "n8n",
+    "ai",
+    "ollama",
+    "social-media",
+    "content-creation"
+  ],
+  "author": "IG Viral Engine",
+  "license": "MIT",
+  "dependencies": {
+    "puppeteer": "^21.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

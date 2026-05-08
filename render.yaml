@@ -1,0 +1,28 @@
+# 🟢 Render Deployment — IG Viral Engine
+# https://render.com (FREE tier available)
+
+# This file tells Render how to deploy your n8n instance
+
+services:
+  - type: web
+    name: ig-viral-engine
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    envVars:
+      - key: N8N_BASIC_AUTH_ACTIVE
+        value: "true"
+      - key: N8N_BASIC_AUTH_USER
+        value: admin
+      - key: N8N_BASIC_AUTH_PASSWORD
+        value: ViralEngine2024!
+      - key: GENERIC_TIMEZONE
+        value: Asia/Shanghai
+      - key: N8N_HOST
+        value: 0.0.0.0
+      - key: N8N_PORT
+        value: "5678"
+      - key: N8N_PROTOCOL
+        value: https
+    healthCheckPath: /healthz
+    autoDeploy: true
